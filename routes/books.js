@@ -3,7 +3,7 @@ const router = express.Router()
 const db = require('../models')
 const axios = require('axios').default
 
-router.get('/index', (req, res) => {
+router.get('/', (req, res) => {
     // Currently, this query variable doesn't do anything
     const query = req.query
     axios
