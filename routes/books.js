@@ -16,6 +16,16 @@ router.get('/index', (req, res) => {
         })
 })
 
-// router.post()
+router.post('/rated', (req, res) => {
+    db.rating.create({
+        userId: req.body.userId,
+        bookId: req.body.bookId,
+        value: req.body.value
+    }).then(post => {
+        res.redirect('/')
+    }).catch(error => {
+        res.send(error)
+    })
+})
 
 module.exports = router
