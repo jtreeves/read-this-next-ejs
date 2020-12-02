@@ -24,7 +24,7 @@ router.post('/rated', (req, res) => {
             value: req.body.value
         })
         .then(post => {
-            res.redirect('/')
+            res.redirect('/books')
         })
         .catch(error => {
             res.send(error)
