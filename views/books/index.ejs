@@ -8,7 +8,7 @@
                 <form action="/books/rated" method="POST">
                     <label for="value">Rating (1-5):</label>
                     <input id="value" name="value" type="text">
-                    <input name="bookId" value="<%= books.id %>" type="hidden">
+                    <input name="bookId" value="<%= book.id %>" type="hidden">
                     <input name="userId" value="<%= currentUser %>" type="hidden">
                     <input type="submit" value="Submit Rating">
                 </form>
