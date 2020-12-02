@@ -1,13 +1,13 @@
+body {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
 nav ul li {
-  text-decoration: none;
-  display: inline-block;
-  margin-right: .3em;
+    text-decoration: none;
+    display: inline-block;
+    margin-right: .3em;
 }
 
 h1 {
-  color: blue;
-}
-
-body {
-    font-family: Georgia, 'Times New Roman', Times, serif;
+    color: blue;
 }
