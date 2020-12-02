@@ -16,4 +16,6 @@ router.get('/index', (req, res) => {
         })
 })
 
+// router.post()
+
 module.exports = router

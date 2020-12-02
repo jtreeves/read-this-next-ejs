@@ -3,7 +3,19 @@
 <ul>
     <% results.forEach(book => { %>
         <li>
-            <p><%= book.title %></p>
+            <p>
+                <%= book.title %>
+                <form action="/books/rated" method="POST">
+                    <label for="rating">Rating (1-5):</label>
+                    <input id="rating" name="rating" type="text">
+                    <input type="submit" value="Submit Rating">
+                </form>
+                <form action="/books/read" method="POST">
+                    <label for="status">Read (Y/N):</label>
+                    <input id="status" name="status" type="text">
+                    <input type="submit" value="Submit Read Status">
+                </form>
+            </p>
         </li>
     <% }) %>
 </ul>
