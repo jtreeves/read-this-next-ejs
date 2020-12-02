@@ -5,5 +5,9 @@ nav ul li {
 }
 
 h1 {
-  color: chartreuse;
+  color: blue;
+}
+
+body {
+    font-family: Georgia, 'Times New Roman', Times, serif;
 }
