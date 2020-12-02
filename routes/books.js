@@ -16,6 +16,11 @@ router.get('/', (req, res) => {
         })
 })
 
+// router.get('/rated', (req, res) => {
+//     axios
+//         .get
+// })
+
 router.post('/rated', (req, res) => {
     db.rating
         .create({
