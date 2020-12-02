@@ -13,8 +13,10 @@
                     <input type="submit" value="Submit Rating">
                 </form>
                 <form action="/books/read" method="POST">
-                    <label for="status">Read (Y/N):</label>
-                    <input id="status" name="status" type="text">
+                    <label for="read">Read (true/false):</label>
+                    <input id="read" name="read" type="text">
+                    <input name="bookId" value="<%= book.id %>" type="hidden">
+                    <input name="userId" value="<%= currentUser.id %>" type="hidden">
                     <input type="submit" value="Submit Read Status">
                 </form>
             </p>
