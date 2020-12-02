@@ -4,11 +4,11 @@ const db = require('../models')
 const passport = require('../config/ppConfig')
 
 router.get('/signup', (req, res) => {
-  res.render('auth/signup')
+    res.render('auth/signup')
 })
 
 router.get('/login', (req, res) => {
-  res.render('auth/login')
+    res.render('auth/login')
 })
 
 router.post('/signup', (req, res) => {

@@ -54,6 +54,7 @@ app.get('/profile', isLoggedIn, (req, res) => {
 })
 
 app.use('/auth', require('./routes/auth'))
+app.use('/books', require('./routes/books'))
 
 const PORT = process.env.PORT || 3000
 const server = app.listen(PORT, () => {
