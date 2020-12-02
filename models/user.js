@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      models.user.hasMany(models.status)
+      models.user.hasMany(models.rating)
+      models.user.hasMany(models.pass)
+      models.user.hasMany(models.favorite)
     }
   };
   user.init({
