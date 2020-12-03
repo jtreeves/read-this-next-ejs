@@ -7,7 +7,7 @@ router.get('/', (req, res) => {
     // Currently, this query variable doesn't do anything
     const query = req.query
     axios
-        .get(`http://gutendex.com/books?languages=en&copyright=false&${query}`)
+        .get(`http://gutendex.com/books?languages=en&copyright=false${query}`)
         .then(response => {
             res.render('books/index', {
                 books: response.data.results,
@@ -25,21 +25,39 @@ router.get('/rated', (req, res) => {
             where: { userId: res.locals.currentUser.id }
         })
         .then(responses => {
-            const outputs = []
+            // const outputs = []
             responses.forEach(response => {
-                const rating = response.value
-                const outputId = response.bookId
-                outputs.push({
-                    rating: rating,
-                    materials: axios.get(`http://gutendex.com/books?languages=en&copyright=false&ids=${outputId}`).data.results
-                })
+                // console.log(`RATINGS RESPONSE VARIABLE: book ${response.bookId} got ${response.value} stars`)
+                // const rating = response.value
+                // const outputId = response.bookId
+                console.log(`RESPONSE BEFORE CHANGE: ${response.bookId}`)
+                // response.bookId = 
+                axios
+                    .get(`http://gutendex.com/books?languages=en&copyright=false&ids=${response.bookId}`)
+                    .then(output => {
+                        console.log(`OUTPUT: ${output}`)
+                        console.log(`OUTPUT DATA: ${output.data.results[0]}`)
+                        console.log(`TITLE: ${output.data.results[0].title}`);
+                        // response.newThing = output.data.results
+                        // console.log(`RESPONSE AFTER CHANGE: ${response.bookId}`)
+                        // console.log(`TITLE: ${response.newThing.title}`);
+                        // console.log(`FULL RESPONSE MAP: ${response}`)
+                        res.render('books/rated', { books: responses })
+                    })
+                    .catch(problem => {
+                        res.send(problem)
+                    })
+                // outputs.push({
+                //     rating: rating,
+                //     materials: axios.get(`http://gutendex.com/books?languages=en&copyright=false&ids=${outputId}`).data.results
+                // })
             })
-            .then(output => {
-                res.render('books/rated', { books: output })
-            })
-            .catch(problem => {
-                res.send(problem)
-            })
+            // console.log(`OUTPUTS ARRAY: ${outputs}`)
+            // .then(output => {
+            // })
+            // .catch(problem => {
+            //     res.send(problem)
+            // })
         })
         .catch(error => {
             res.send(error)
@@ -55,6 +73,7 @@ router.get('/read', (req, res) => {
             }
         })
         .then(response => {
+            console.log(`STATUSES RESPONSE VARIABLE: ${response}`)
             res.render('books/read', { statuses: response })
         })
         .catch(error => {
