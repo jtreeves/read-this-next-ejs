@@ -24,8 +24,22 @@ router.get('/rated', (req, res) => {
         .findAll({
             where: { userId: res.locals.currentUser.id }
         })
-        .then(response => {
-            res.render('books/rated', { ratings: response })
+        .then(responses => {
+            const outputs = []
+            responses.forEach(response => {
+                const rating = response.value
+                const outputId = response.bookId
+                outputs.push({
+                    rating: rating,
+                    materials: axios.get(`http://gutendex.com/books?languages=en&copyright=false&ids=${outputId}`).data.results
+                })
+            })
+            .then(output => {
+                res.render('books/rated', { books: output })
+            })
+            .catch(problem => {
+                res.send(problem)
+            })
         })
         .catch(error => {
             res.send(error)
