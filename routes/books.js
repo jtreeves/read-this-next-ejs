@@ -30,6 +30,20 @@ router.get('/rated', (req, res) => {
         })
 })
 
+router.get('/read', (req, res) => {
+    db.status
+        .findAll({
+            where: {
+                userId: res.locals.currentUser.id,
+                read: true
+            }
+        }).then(response => {
+            res.render('books/read', { statuses: response })
+        }).catch(error => {
+            res.send(error)
+        })
+})
+
 router.post('/rated', (req, res) => {
     db.rating
         .create({
