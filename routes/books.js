@@ -9,7 +9,10 @@ router.get('/', (req, res) => {
     axios
         .get(`http://gutendex.com/books?languages=en&copyright=false&${query}`)
         .then(response => {
-            res.render('books/index', { books: response.data.results })
+            res.render('books/index', {
+                books: response.data.results,
+                currentUser: res.locals.currentUser
+            })
         })
         .catch(error => {
             res.send(error)
@@ -19,7 +22,7 @@ router.get('/', (req, res) => {
 router.get('/rated', (req, res) => {
     db.rating
         .findAll({
-            // where: { userId: currentUser.id }
+            where: { userId: res.locals.currentUser.id }
         }).then(response => {
             res.render('books/rated', { ratings: response })
         }).catch(error => {
