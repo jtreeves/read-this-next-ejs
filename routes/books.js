@@ -19,6 +19,19 @@ router.get('/', (req, res) => {
         })
 })
 
+function getBooks(query) {
+    return axios
+        .get(`http://gutendex.com/books?languages=en&copyright=false&ids=${query}`)
+        .then(response => {
+            outputs.push({
+                materials: output,
+                rating: response.value
+            })
+        })
+        .catch(error)
+}
+
+
 router.get('/rated', (req, res) => {
     db.rating
         .findAll({
@@ -26,56 +39,90 @@ router.get('/rated', (req, res) => {
         })
         .then(responses => {
             const outputs = []
-            responses.forEach(response => {
-                // console.log(`RATINGS RESPONSE VARIABLE: book ${response.bookId} got ${response.value} stars`)
-                // const rating = response.value
-                // const outputId = response.bookId
-                // console.log(`RESPONSE BEFORE CHANGE: ${response.bookId}`)
-                // response.bookId = 
+            responses.forEach(addCat => {
                 axios
                     .get(`http://gutendex.com/books?languages=en&copyright=false&ids=${response.bookId}`)
                     .then(output => {
-                        // console.log(`OUTPUT: ${output}`)
-                        // console.log(`OUTPUT DATA: ${output.data.results[0]}`)
-                        // console.log(`TITLE: ${output.data.results[0].title}`);
-                        // response.newThing = output.data.results
-                        // console.log(`RESPONSE AFTER CHANGE: ${response.bookId}`)
-                        // console.log(`TITLE: ${response.newThing.title}`);
-                        // console.log(`FULL RESPONSE MAP: ${response}`)
                         outputs.push({
                             materials: output,
                             rating: response.value
                         })
-                        // res.render('books/rated', {
-                        //     // ratings: responses,
-                        //     // This is a map that works
-                        //     books: responses
-                        //     // This is not a map that works
-                        //     // books: output
-                        // })
+                        Promise.all(makeCategories).then(() => {
+                            res.redirect(`/projects/${id}`)
+                        outputs.Promise.all().then(
+                            res.render('books/rated', { books: outputs })
+                        )
+                    })
                     })
                     .then(newThing => {
-                        res.render('books/rated', { books: outputs })
                     })
                     .catch(problem => {
                         res.send(problem)
                     })
-                // outputs.push({
-                //     rating: rating,
-                //     materials: axios.get(`http://gutendex.com/books?languages=en&copyright=false&ids=${outputId}`).data.results
-                // })
             })
-            // console.log(`OUTPUTS ARRAY: ${outputs}`)
-            // .then(output => {
-            // })
-            // .catch(problem => {
-            //     res.send(problem)
-            // })
         })
         .catch(error => {
             res.send(error)
         })
 })
+
+// router.get('/rated', (req, res) => {
+//     db.rating
+//         .findAll({
+//             where: { userId: res.locals.currentUser.id }
+//         })
+//         .then(responses => {
+//             const outputs = []
+//             responses.forEach(response => {
+//                 // console.log(`RATINGS RESPONSE VARIABLE: book ${response.bookId} got ${response.value} stars`)
+//                 // const rating = response.value
+//                 // const outputId = response.bookId
+//                 // console.log(`RESPONSE BEFORE CHANGE: ${response.bookId}`)
+//                 // response.bookId = 
+//                 axios
+//                     .get(`http://gutendex.com/books?languages=en&copyright=false&ids=${response.bookId}`)
+//                     .then(output => {
+//                         // console.log(`OUTPUT: ${output}`)
+//                         // console.log(`OUTPUT DATA: ${output.data.results[0]}`)
+//                         // console.log(`TITLE: ${output.data.results[0].title}`);
+//                         // response.newThing = output.data.results
+//                         // console.log(`RESPONSE AFTER CHANGE: ${response.bookId}`)
+//                         // console.log(`TITLE: ${response.newThing.title}`);
+//                         // console.log(`FULL RESPONSE MAP: ${response}`)
+//                         outputs.push({
+//                             materials: output,
+//                             rating: response.value
+//                         })
+//                         // res.render('books/rated', {
+//                         //     // ratings: responses,
+//                         //     // This is a map that works
+//                         //     books: responses
+//                         //     // This is not a map that works
+//                         //     // books: output
+//                         // })
+//                     })
+//                     .then(newThing => {
+//                         res.render('books/rated', { books: outputs })
+//                     })
+//                     .catch(problem => {
+//                         res.send(problem)
+//                     })
+//                 // outputs.push({
+//                 //     rating: rating,
+//                 //     materials: axios.get(`http://gutendex.com/books?languages=en&copyright=false&ids=${outputId}`).data.results
+//                 // })
+//             })
+//             // console.log(`OUTPUTS ARRAY: ${outputs}`)
+//             // .then(output => {
+//             // })
+//             // .catch(problem => {
+//             //     res.send(problem)
+//             // })
+//         })
+//         .catch(error => {
+//             res.send(error)
+//         })
+// })
 
 router.get('/read', (req, res) => {
     db.status
