@@ -25,7 +25,7 @@ router.get('/rated', (req, res) => {
             where: { userId: res.locals.currentUser.id }
         })
         .then(responses => {
-            // const outputs = []
+            const outputs = []
             responses.forEach(response => {
                 // console.log(`RATINGS RESPONSE VARIABLE: book ${response.bookId} got ${response.value} stars`)
                 // const rating = response.value
@@ -42,20 +42,20 @@ router.get('/rated', (req, res) => {
                         // console.log(`RESPONSE AFTER CHANGE: ${response.bookId}`)
                         // console.log(`TITLE: ${response.newThing.title}`);
                         // console.log(`FULL RESPONSE MAP: ${response}`)
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        res.render('books/rated', {
-                            // ratings: responses,
-                            // This is a map that works
-                            books: responses
-                            // This is not a map that works
-                            // books: output
+                        outputs.push({
+                            materials: output,
+                            rating: response.value
                         })
+                        // res.render('books/rated', {
+                        //     // ratings: responses,
+                        //     // This is a map that works
+                        //     books: responses
+                        //     // This is not a map that works
+                        //     // books: output
+                        // })
+                    })
+                    .then(newThing => {
+                        res.render('books/rated', { books: outputs })
                     })
                     .catch(problem => {
                         res.send(problem)
