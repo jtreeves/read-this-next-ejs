@@ -23,9 +23,11 @@ router.get('/rated', (req, res) => {
     db.rating
         .findAll({
             where: { userId: res.locals.currentUser.id }
-        }).then(response => {
+        })
+        .then(response => {
             res.render('books/rated', { ratings: response })
-        }).catch(error => {
+        })
+        .catch(error => {
             res.send(error)
         })
 })
@@ -37,9 +39,11 @@ router.get('/read', (req, res) => {
                 userId: res.locals.currentUser.id,
                 read: true
             }
-        }).then(response => {
+        })
+        .then(response => {
             res.render('books/read', { statuses: response })
-        }).catch(error => {
+        })
+        .catch(error => {
             res.send(error)
         })
 })
