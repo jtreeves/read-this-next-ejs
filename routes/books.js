@@ -4,10 +4,10 @@ const axios = require('axios').default
 const db = require('../models')
 
 router.get('/', (req, res) => {
-    // Currently, this query variable doesn't do anything
-    const query = req.query
+    // Currently, this query variable doesn't do anything; before it was at the end of the axios get request
+    // const query = req.query
     axios
-        .get(`http://gutendex.com/books?languages=en&copyright=false${query}`)
+        .get(`http://gutendex.com/books?languages=en&copyright=false`)
         .then(response => {
             res.render('books/index', {
                 books: response.data.results,
@@ -30,19 +30,32 @@ router.get('/rated', (req, res) => {
                 // console.log(`RATINGS RESPONSE VARIABLE: book ${response.bookId} got ${response.value} stars`)
                 // const rating = response.value
                 // const outputId = response.bookId
-                console.log(`RESPONSE BEFORE CHANGE: ${response.bookId}`)
+                // console.log(`RESPONSE BEFORE CHANGE: ${response.bookId}`)
                 // response.bookId = 
                 axios
                     .get(`http://gutendex.com/books?languages=en&copyright=false&ids=${response.bookId}`)
                     .then(output => {
-                        console.log(`OUTPUT: ${output}`)
-                        console.log(`OUTPUT DATA: ${output.data.results[0]}`)
-                        console.log(`TITLE: ${output.data.results[0].title}`);
+                        // console.log(`OUTPUT: ${output}`)
+                        // console.log(`OUTPUT DATA: ${output.data.results[0]}`)
+                        // console.log(`TITLE: ${output.data.results[0].title}`);
                         // response.newThing = output.data.results
                         // console.log(`RESPONSE AFTER CHANGE: ${response.bookId}`)
                         // console.log(`TITLE: ${response.newThing.title}`);
                         // console.log(`FULL RESPONSE MAP: ${response}`)
-                        res.render('books/rated', { books: responses })
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        res.render('books/rated', {
+                            // ratings: responses,
+                            // This is a map that works
+                            books: responses
+                            // This is not a map that works
+                            // books: output
+                        })
                     })
                     .catch(problem => {
                         res.send(problem)
