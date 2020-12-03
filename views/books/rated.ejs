@@ -1,2 +1,7 @@
 <h2>Your Rated Books</h2>
 <p>This page will display a list of all the books that you have rated. You can update their ratings at any time. Rate more books to add them to this page!</p>
+<ul>
+    <% ratings.forEach(rating => { %>
+        <li><p>You rated book <%= rating.bookId %> with <%= rating.value %> stars!</p></li>
+    <% }) %> 
+</ul>

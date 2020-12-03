@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const db = require('../models')
 const axios = require('axios').default
+const db = require('../models')
 
 router.get('/', (req, res) => {
     // Currently, this query variable doesn't do anything
@@ -9,17 +9,23 @@ router.get('/', (req, res) => {
     axios
         .get(`http://gutendex.com/books?languages=en&copyright=false&${query}`)
         .then(response => {
-            res.render('books/index', { results: response.data.results })
+            res.render('books/index', { books: response.data.results })
         })
         .catch(error => {
             res.send(error)
         })
 })
 
-// router.get('/rated', (req, res) => {
-//     axios
-//         .get
-// })
+router.get('/rated', (req, res) => {
+    db.rating
+        .findAll({
+            // where: { userId: currentUser.id }
+        }).then(response => {
+            res.render('books/rated', { ratings: response })
+        }).catch(error => {
+            res.send(error)
+        })
+})
 
 router.post('/rated', (req, res) => {
     db.rating
@@ -28,7 +34,7 @@ router.post('/rated', (req, res) => {
             bookId: req.body.bookId,
             value: req.body.value
         })
-        .then(post => {
+        .then(response => {
             res.redirect('/books')
         })
         .catch(error => {
@@ -43,7 +49,7 @@ router.post('/read', (req, res) => {
             bookId: req.body.bookId,
             read: req.body.read
         })
-        .then(post => {
+        .then(response => {
             res.redirect('/books')
         })
         .catch(error => {
