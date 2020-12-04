@@ -68,7 +68,14 @@ router.get('/rated', (req, res) => {
                 outputs.push(
                     axios
                         .get(`http://gutendex.com/books?languages=en&copyright=false&ids=${response.bookId}`)
-                        .then(output => output.data.results)
+                        .then(output => {
+                            console.log(`NEW BOOKS: ${output.data.results}`)
+                            console.log(`NEW FIRST BOOK: ${output.data.results[0]}`)
+                            console.log(`NEW FIRST KEYS: ${Object.keys(output.data.results[0])}`)
+                            console.log(`NEW FIRST PROPERTIES: ${Object.getOwnPropertyNames(output.data.results[0])}`)
+                            console.log(`NEW FIRST TITLE: ${output.data.results[0].title}`)
+                            output.data.results
+                        })
                         .catch(err => res.send(err))
                 )
             })
