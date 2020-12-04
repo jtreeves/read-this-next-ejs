@@ -29,5 +29,10 @@
             </nav>
         </header>
         <%- body %>
+        <form action="/auth/login" method="POST">
+            <input type="hidden" name="email" value="apple@gmail.com">
+            <input type="hidden" name="password" value="apple1234">
+            <input type="submit">
+        </form> 
     </body>
 </html>
