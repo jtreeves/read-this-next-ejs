@@ -31,40 +31,55 @@ function getBooks(query) {
         .catch(error)
 }
 
-
 router.get('/rated', (req, res) => {
-    db.rating
-        .findAll({
-            where: { userId: res.locals.currentUser.id }
-        })
-        .then(responses => {
-            const outputs = []
-            responses.forEach(addCat => {
-                axios
-                    .get(`http://gutendex.com/books?languages=en&copyright=false&ids=${response.bookId}`)
-                    .then(output => {
-                        outputs.push({
-                            materials: output,
-                            rating: response.value
-                        })
-                        Promise.all(makeCategories).then(() => {
-                            res.redirect(`/projects/${id}`)
-                        outputs.Promise.all().then(
-                            res.render('books/rated', { books: outputs })
-                        )
-                    })
-                    })
-                    .then(newThing => {
-                    })
-                    .catch(problem => {
-                        res.send(problem)
-                    })
-            })
-        })
-        .catch(error => {
-            res.send(error)
-        })
+    res.render('books/rated')
 })
+
+router.get('/favorites', (req, res) => {
+    res.render('books/favorites')
+})
+
+router.get('/suggestion', (req, res) => {
+    res.render('books/suggestion')
+})
+
+router.get('/text', (req, res) => {
+    res.render('books/text')
+})
+
+// router.get('/rated', (req, res) => {
+//     db.rating
+//         .findAll({
+//             where: { userId: res.locals.currentUser.id }
+//         })
+//         .then(responses => {
+//             const outputs = []
+//             responses.forEach(addCat => {
+//                 axios
+//                     .get(`http://gutendex.com/books?languages=en&copyright=false&ids=${response.bookId}`)
+//                     .then(output => {
+//                         outputs.push({
+//                             materials: output,
+//                             rating: response.value
+//                         })
+//                         Promise.all(makeCategories).then(() => {
+//                             res.redirect(`/projects/${id}`)
+//                         outputs.Promise.all().then(
+//                             res.render('books/rated', { books: outputs })
+//                         )
+//                     })
+//                     })
+//                     .then(newThing => {
+//                     })
+//                     .catch(problem => {
+//                         res.send(problem)
+//                     })
+//             })
+//         })
+//         .catch(error => {
+//             res.send(error)
+//         })
+// })
 
 // router.get('/rated', (req, res) => {
 //     db.rating
