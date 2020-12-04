@@ -108,7 +108,7 @@ router.get('/suggestion', (req, res) => {
 // })
 
 
-// AXIOS ATTEMP
+// AXIOS ALL ATTEMPT
 // router.get('/rated', (req, res) => {
 //     db.rating
 //         .findAll({
