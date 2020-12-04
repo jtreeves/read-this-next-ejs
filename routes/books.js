@@ -164,9 +164,17 @@ router.get('/rated', (req, res) => {
             where: { userId: res.locals.currentUser.id }
         })
         .then(responses => {
-            const bookIds = responses.map(response => response.bookId)
-            axios
-                .get(`http://gutendex.com/books?languages=en&copyright=false&ids=${bookIds}`)
+            const outputs = []
+            responses.forEach(response => {
+                outputs.push(
+                    axios
+                        .get(`http://gutendex.com/books?languages=en&copyright=false&ids=${response.bookId}`)
+                        .then(final => final.data.results)
+                        .catch(err => res.send(err))
+                )
+            })
+            Promise
+                .all(outputs)
                 .then(output => {
                     console.log(`OUTPUT: ${output}`)
                     console.log(`OUTPUT.DATA: ${output.data}`)
@@ -177,14 +185,42 @@ router.get('/rated', (req, res) => {
                     console.log(`OUTPUT.DATA.RESULTS KEYS: ${Object.keys(output.data.results)}`)
                     console.log(`OUTPUT.DATA.RESULTS[0] KEYS: ${Object.keys(output.data.results[0])}`)
                     console.log(`OUTPUT.DATA.RESULTS[0].TITLE: ${output.data.results[0].title}`)
-                    res.render('books/rated', {
-                        books: output.data.result
-                    })
+                    res.render('books/rated', { books: output })
                 })
                 .catch(problem => res.send(problem))
         })
-        .catch(error => res.send(error))
+        .catch(error => {
+            res.send(error)
+        })
 })
+
+// router.get('/rated', (req, res) => {
+//     db.rating
+//         .findAll({
+//             where: { userId: res.locals.currentUser.id }
+//         })
+//         .then(responses => {
+//             const bookIds = responses.map(response => response.bookId)
+//             axios
+//                 .get(`http://gutendex.com/books?languages=en&copyright=false&ids=${bookIds}`)
+//                 .then(output => {
+//                     console.log(`OUTPUT: ${output}`)
+//                     console.log(`OUTPUT.DATA: ${output.data}`)
+//                     console.log(`OUTPUT.DATA.RESULTS: ${output.data.results}`)
+//                     console.log(`OUTPUT.DATA.RESULTS[0]: ${output.data.results[0]}`)
+//                     console.log(`OUTPUT KEYS: ${Object.keys(output)}`)
+//                     console.log(`OUTPUT.DATA KEYS: ${Object.keys(output.data)}`)
+//                     console.log(`OUTPUT.DATA.RESULTS KEYS: ${Object.keys(output.data.results)}`)
+//                     console.log(`OUTPUT.DATA.RESULTS[0] KEYS: ${Object.keys(output.data.results[0])}`)
+//                     console.log(`OUTPUT.DATA.RESULTS[0].TITLE: ${output.data.results[0].title}`)
+//                     res.render('books/rated', {
+//                         books: output.data.result
+//                     })
+//                 })
+//                 .catch(problem => res.send(problem))
+//         })
+//         .catch(error => res.send(error))
+// })
 
 router.get('/text', (req, res) => {
     res.render('books/text')
