@@ -107,6 +107,57 @@ router.get('/suggestion', (req, res) => {
 //         })
 // })
 
+
+// AXIOS ATTEMP
+// router.get('/rated', (req, res) => {
+//     db.rating
+//         .findAll({
+//             where: { userId: res.locals.currentUser.id }
+//         })
+//         .then(responses => {
+//             const outputs = []
+//             responses.forEach(response => {
+//                 outputs.push(
+//                     axios
+//                         .get(`http://gutendex.com/books?languages=en&copyright=false&ids=${response.bookId}`)
+//                 )
+//             })
+//             axios
+//                 .all(outputs)
+//                 .then(axios.spread((...outputs) => {
+//                     outputs.forEach((output, index) => {
+//                         let output = output[index]
+//                     })
+//                 })
+                    
+                    
+                    
+                    
+                    
+                    
+//                     output => {
+                    
+                    
+                    
+//                     console.log(`OUTPUT: ${output}`)
+//                     console.log(`OUTPUT[0]: ${output[0]}`)
+//                     console.log(`OUTPUT[0].DATA: ${output[0].data}`)
+//                     console.log(`OUTPUT[0].DATA.RESULTS: ${output[0].data.results}`)
+//                     console.log(`OUTPUT KEYS: ${Object.keys(output)}`)
+//                     console.log(`OUTPUT[0] KEYS: ${Object.keys(output[0])}`)
+//                     console.log(`OUTPUT[0].DATA KEYS: ${Object.keys(output[0].data)}`)
+//                     console.log(`OUTPUT[0].DATA.RESULTS KEYS: ${Object.keys(output[0].data.results)}`)
+//                     res.render('books/rated', {
+//                         books: output
+//                     })
+//                 })
+//                 .catch(problem => res.send(problem))
+//         })
+//         .catch(error => {
+//             res.send(error)
+//         })
+// })
+
 router.get('/rated', (req, res) => {
     db.rating
         .findAll({
@@ -120,13 +171,14 @@ router.get('/rated', (req, res) => {
                         .get(`http://gutendex.com/books?languages=en&copyright=false&ids=${response.bookId}`)
                 )
             })
-            axios
+            Promise
                 .all(outputs)
                 .then(output => {
                     console.log(`OUTPUT: ${output}`)
                     console.log(`OUTPUT[0]: ${output[0]}`)
                     console.log(`OUTPUT[0].DATA: ${output[0].data}`)
                     console.log(`OUTPUT[0].DATA.RESULTS: ${output[0].data.results}`)
+                    console.log(`OUTPUT STRINGIFY: ${JSON.stringify(output)}`)
                     console.log(`OUTPUT KEYS: ${Object.keys(output)}`)
                     console.log(`OUTPUT[0] KEYS: ${Object.keys(output[0])}`)
                     console.log(`OUTPUT[0].DATA KEYS: ${Object.keys(output[0].data)}`)
