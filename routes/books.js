@@ -21,22 +21,18 @@ router.get('/', (req, res) => {
 
 function getBooks(query) {
     return axios
-        .get(`http://gutendex.com/books?languages=en&copyright=false&ids=${query}`)
-        .then(response => {
-            outputs.push({
-                materials: output,
-                rating: response.value
-            })
-        })
-        .catch(error)
+        .get(`http://gutendex.com/books?languages=en&copyright=false&${query}`)
+        .then(response => response.data.results)
+        .catch(error => res.send(error))
 }
+
+router.get('/favorites', (req, res) => {
+    // const books = getBooks().data.results
+    res.render('books/favorites', { books: getBooks() })
+})
 
 router.get('/rated', (req, res) => {
     res.render('books/rated')
-})
-
-router.get('/favorites', (req, res) => {
-    res.render('books/favorites')
 })
 
 router.get('/suggestion', (req, res) => {
