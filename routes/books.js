@@ -19,16 +19,23 @@ router.get('/', (req, res) => {
         })
 })
 
-function getBooks(query) {
+function getBooks() {
     return axios
-        .get(`http://gutendex.com/books?languages=en&copyright=false&${query}`)
+        .get(`http://gutendex.com/books?languages=en&copyright=false`)
         .then(response => response.data.results)
         .catch(error => res.send(error))
 }
 
 router.get('/favorites', (req, res) => {
-    // const books = getBooks().data.results
-    res.render('books/favorites', { books: getBooks() })
+    const axiosBooks = getBooks()
+    console.log(`BOOKS: ${axiosBooks}`)
+    Promise
+        .all(axiosBooks)
+        .then(response => {
+            console.log(`BOOKS: ${response}`)
+            res.render('books/favorites', { books: response })
+        })
+        .catch(error => res.send(error))
 })
 
 router.get('/rated', (req, res) => {
