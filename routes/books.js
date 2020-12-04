@@ -68,19 +68,22 @@ router.get('/rated', (req, res) => {
                 outputs.push(
                     axios
                         .get(`http://gutendex.com/books?languages=en&copyright=false&ids=${response.bookId}`)
-                        .then(output => { output.data.results })
-                        .catch(err => res.send(err))
+                        // .then(output => { output.data.results })
+                        // .catch(err => res.send(err))
                 )
             })
             Promise
                 .all(outputs)
-                .then(final => {
-                    console.log(`FINAL BOOKS: ${final}`)
-                    console.log(`FINAL FIRST BOOK: ${final[0]}`)
-                    console.log(`FINAL FIRST KEYS: ${Object.keys(final[0])}`)
-                    console.log(`FINAL FIRST PROPERTIES: ${Object.getOwnPropertyNames(final[0])}`)
-                    console.log(`FINAL FIRST TITLE: ${final[0].title}`)
-                    res.render('books/rated', { books: final })
+                .then(output => {
+                    console.log(`RATED RAW: ${output}`)
+                    console.log(`RATED BOOKS: ${output.data.results}`)
+                    console.log(`RATED FIRST BOOK: ${output.data.results[0]}`)
+                    console.log(`RATED FIRST KEYS: ${Object.keys(output.data.results[0])}`)
+                    console.log(`RATED FIRST PROPERTIES: ${Object.getOwnPropertyNames(output.data.results[0])}`)
+                    console.log(`RATED FIRST TITLE: ${output.data.results[0].title}`)
+                    res.render('books/rated', {
+                        books: output.data.results
+                    })
                 })
                 .catch(problem => res.send(problem))
         })
