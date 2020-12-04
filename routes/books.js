@@ -71,11 +71,18 @@ router.get('/rated', (req, res) => {
                 outputs.push(
                     axios
                         .get(`http://gutendex.com/books?languages=en&copyright=false&ids=${thingId}`)
+                        .then(potato => potato.data.results)
+                        .catch(error => res.send(error))
                 )
             })
             Promise
                 .all(outputs)
                 .then(final => {
+                    console.log(`FINAL BOOKS: ${final}`)
+                    console.log(`FINAL FIRST BOOK: ${final[0]}`)
+                    // console.log(`FINAL FIRST DATA: ${final[0].data}`)
+                    // console.log(`FINAL FIRST BOOK: ${final[0].data.results}`)
+                    console.log(`FINAL FIRST TITLE: ${final[0].title}`)
                     res.render('books/rated', { books: final })
                 })
                 .catch(err => res.send(err))
