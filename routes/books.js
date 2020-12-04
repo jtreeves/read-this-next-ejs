@@ -164,25 +164,17 @@ router.get('/rated', (req, res) => {
             where: { userId: res.locals.currentUser.id }
         })
         .then(responses => {
-            const outputs = []
-            responses.forEach(response => {
-                outputs.push(
-                    axios
-                        .get(`http://gutendex.com/books?languages=en&copyright=false&ids=${response.bookId}`)
-                )
-            })
-            Promise
-                .all(outputs)
+            const bookIds = responses.map(response => response.bookId)
+            axios
+                .get(`http://gutendex.com/books?languages=en&copyright=false&ids=${bookIds}`)
                 .then(output => {
                     res.render('books/rated', {
-                        books: output
+                        books: output.data.result
                     })
                 })
                 .catch(problem => res.send(problem))
         })
-        .catch(error => {
-            res.send(error)
-        })
+        .catch(error => res.send(error))
 })
 
 router.get('/text', (req, res) => {
