@@ -68,9 +68,7 @@ router.get('/rated', (req, res) => {
                 outputs.push(
                     axios
                         .get(`http://gutendex.com/books?languages=en&copyright=false&ids=${response.bookId}`)
-                        .then(output => {
-                            output.data.results
-                        })
+                        .then(output => { output.data.results })
                         .catch(err => res.send(err))
                 )
             })
