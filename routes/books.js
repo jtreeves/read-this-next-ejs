@@ -9,7 +9,10 @@ router.get('/', (req, res) => {
     axios
         .get(`http://gutendex.com/books?languages=en&copyright=false`)
         .then(response => {
-            console.log(`BOOKS OLD: ${response.data.results}`)
+            console.log(`OLD RAW DATA: ${response}`)
+            console.log(`OLD BOOKS: ${response.data.results}`)
+            console.log(`OLD FIRST BOOK: ${response.data.results[0]}`)
+            console.log(`OLD FIRST TITLE: ${response.data.results[0].title}`)
             res.render('books/index', {
                 books: response.data.results,
                 currentUser: res.locals.currentUser
@@ -23,29 +26,39 @@ router.get('/', (req, res) => {
 function getBooks() {
     return axios
         .get(`http://gutendex.com/books?languages=en&copyright=false`)
-        .then(response => response)
+        .then(response => {
+            console.log(`NEW RAW DATA: ${response}`)
+            console.log(`NEW BOOKS: ${response.data.results}`)
+            console.log(`NEW FIRST BOOK: ${response.data.results[0]}`)
+            console.log(`NEW FIRST TITLE: ${response.data.results[0].title}`)
+            response.data.results
+        })
         .catch(error => res.send(error))
 }
 
 router.get('/favorites', (req, res) => {
+    getBooks()
+        .then(response => {
+            console.log(`DIRECT CALL: ${response}`)
+            res.render('books/favorites', { books: response })
+        })
+        .catch(error => res.send(error))
+})
+
+router.get('/suggestion', (req, res) => {
     const axiosBooks = []
     axiosBooks.push(getBooks())
     Promise
         .all(axiosBooks)
         .then(response => {
-            console.log(`BOOKS RAW RESPONSE DATA: ${response}`)
-            console.log(`BOOKS NEW: ${response.data.results}`)
-            res.render('books/favorites', { books: response.data.results })
+            console.log(`PROMISE CALL: ${response}`)
+            res.render('books/suggestion', { books: response })
         })
         .catch(error => res.send(error))
 })
 
 router.get('/rated', (req, res) => {
     res.render('books/rated')
-})
-
-router.get('/suggestion', (req, res) => {
-    res.render('books/suggestion')
 })
 
 router.get('/text', (req, res) => {
