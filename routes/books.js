@@ -61,6 +61,52 @@ router.get('/suggestion', (req, res) => {
         .catch(error => res.send(error))
 })
 
+// ASYNC VERSION OF FUNCTION
+// router.get('/rated', (req, res) => {
+//     db.rating
+//         .findAll({
+//             where: { userId: res.locals.currentUser.id }
+//         })
+//         .then(responses => {
+//             const outputs = []
+            
+            
+            
+//             for (let i = 0; i < responses.length; i++) {
+                
+//             }
+            
+            
+            
+            
+//             responses.forEach(response => {
+//                 outputs.push(
+//                     axios
+//                         .get(`http://gutendex.com/books?languages=en&copyright=false&ids=${response.bookId}`)
+//                 )
+//             })
+//             Promise
+//                 .all(outputs)
+//                 .then(output => {
+//                     console.log(`OUTPUT: ${output}`)
+//                     console.log(`OUTPUT[0]: ${output[0]}`)
+//                     console.log(`OUTPUT[0].DATA: ${output[0].data}`)
+//                     console.log(`OUTPUT[0].DATA.RESULTS: ${output[0].data.results}`)
+//                     console.log(`OUTPUT KEYS: ${Object.keys(output)}`)
+//                     console.log(`OUTPUT[0] KEYS: ${Object.keys(output[0])}`)
+//                     console.log(`OUTPUT[0].DATA KEYS: ${Object.keys(output[0].data)}`)
+//                     console.log(`OUTPUT[0].DATA.RESULTS KEYS: ${Object.keys(output[0].data.results)}`)
+//                     res.render('books/rated', {
+//                         books: output
+//                     })
+//                 })
+//                 .catch(problem => res.send(problem))
+//         })
+//         .catch(error => {
+//             res.send(error)
+//         })
+// })
+
 router.get('/rated', (req, res) => {
     db.rating
         .findAll({
@@ -74,7 +120,7 @@ router.get('/rated', (req, res) => {
                         .get(`http://gutendex.com/books?languages=en&copyright=false&ids=${response.bookId}`)
                 )
             })
-            Promise
+            axios
                 .all(outputs)
                 .then(output => {
                     console.log(`OUTPUT: ${output}`)
