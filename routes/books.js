@@ -76,13 +76,13 @@ router.get('/rated', (req, res) => {
                 .all(outputs)
                 .then(output => {
                     console.log(`RATED RAW: ${output}`)
-                    console.log(`RATED BOOKS: ${output.data.results}`)
-                    console.log(`RATED FIRST BOOK: ${output.data.results[0]}`)
-                    console.log(`RATED FIRST KEYS: ${Object.keys(output.data.results[0])}`)
-                    console.log(`RATED FIRST PROPERTIES: ${Object.getOwnPropertyNames(output.data.results[0])}`)
-                    console.log(`RATED FIRST TITLE: ${output.data.results[0].title}`)
+                    console.log(`RATED BOOKS: ${output}`)
+                    console.log(`RATED FIRST BOOK: ${output[0]}`)
+                    console.log(`RATED FIRST KEYS: ${Object.keys(output[0])}`)
+                    console.log(`RATED FIRST PROPERTIES: ${Object.getOwnPropertyNames(output[0])}`)
+                    console.log(`RATED FIRST TITLE: ${output[0].title}`)
                     res.render('books/rated', {
-                        books: output.data.results
+                        books: output
                     })
                 })
                 .catch(problem => res.send(problem))
