@@ -9,6 +9,7 @@ router.get('/', (req, res) => {
     axios
         .get(`http://gutendex.com/books?languages=en&copyright=false`)
         .then(response => {
+            console.log(`BOOKS OLD: ${response.data.results}`)
             res.render('books/index', {
                 books: response.data.results,
                 currentUser: res.locals.currentUser
@@ -27,12 +28,13 @@ function getBooks() {
 }
 
 router.get('/favorites', (req, res) => {
-    const axiosBooks = getBooks()
-    console.log(`BOOKS: ${axiosBooks}`)
+    const axiosBooks = []
+    axiosBooks.push(getBooks())
+    console.log(`BOOKS ARRAY: ${axiosBooks}`)
     Promise
         .all(axiosBooks)
         .then(response => {
-            console.log(`BOOKS: ${response}`)
+            console.log(`BOOKS OBJECT: ${response}`)
             res.render('books/favorites', { books: response })
         })
         .catch(error => res.send(error))
