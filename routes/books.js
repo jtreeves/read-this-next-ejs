@@ -78,11 +78,11 @@ router.get('/rated', (req, res) => {
                     console.log(`RATED RAW: ${output}`)
                     console.log(`RATED BOOKS: ${output}`)
                     console.log(`RATED FIRST BOOK: ${output[0]}`)
-                    console.log(`RATED FIRST KEYS: ${Object.keys(output[0].data)}`)
-                    console.log(`RATED FIRST PROPERTIES: ${Object.getOwnPropertyNames(output[0].data)}`)
-                    console.log(`RATED FIRST TITLE: ${output[0].data.title}`)
+                    console.log(`RATED FIRST KEYS: ${Object.keys(output[0].data.results)}`)
+                    console.log(`RATED FIRST PROPERTIES: ${Object.getOwnPropertyNames(output[0].data.results)}`)
+                    console.log(`RATED FIRST TITLE: ${output[0].data.results.title}`)
                     res.render('books/rated', {
-                        books: output.data
+                        books: output.data.results
                     })
                 })
                 .catch(problem => res.send(problem))
