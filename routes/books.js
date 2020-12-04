@@ -168,6 +168,15 @@ router.get('/rated', (req, res) => {
             axios
                 .get(`http://gutendex.com/books?languages=en&copyright=false&ids=${bookIds}`)
                 .then(output => {
+                    console.log(`OUTPUT: ${output}`)
+                    console.log(`OUTPUT.DATA: ${output.data}`)
+                    console.log(`OUTPUT.DATA.RESULTS: ${output.data.results}`)
+                    console.log(`OUTPUT.DATA.RESULTS[0]: ${output.data.results[0]}`)
+                    console.log(`OUTPUT KEYS: ${Object.keys(output)}`)
+                    console.log(`OUTPUT.DATA KEYS: ${Object.keys(output.data)}`)
+                    console.log(`OUTPUT.DATA.RESULTS KEYS: ${Object.keys(output.data.results)}`)
+                    console.log(`OUTPUT.DATA.RESULTS[0] KEYS: ${Object.keys(output.data.results[0])}`)
+                    console.log(`OUTPUT.DATA.RESULTS[0].TITLE: ${output.data.results[0].title}`)
                     res.render('books/rated', {
                         books: output.data.result
                     })
