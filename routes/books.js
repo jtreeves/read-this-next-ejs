@@ -48,6 +48,7 @@ router.get('/favorites', (req, res) => {
 router.get('/suggestion', (req, res) => {
     const axiosBooks = []
     axiosBooks.push(getBooks())
+    console.log(`AXIOS BOOKS: ${axiosBooks}`)
     Promise
         .all(axiosBooks)
         .then(response => {
@@ -58,7 +59,30 @@ router.get('/suggestion', (req, res) => {
 })
 
 router.get('/rated', (req, res) => {
-    res.render('books/rated')
+    db.rating
+        .findAll({
+            where: { userId: res.locals.currentUser.id }
+        })
+        .then(responses => {
+            const outputs = []
+            responses.forEach(response => {
+                const thing = response.get()
+                const thingId = thing.bookId
+                outputs.push(
+                    axios
+                        .get(`http://gutendex.com/books?languages=en&copyright=false&ids=${thingId}`)
+                )
+            })
+            Promise
+                .all(outputs)
+                .then(final => {
+                    res.render('books/rated', { books: final })
+                })
+                .catch(err => res.send(err))
+        })
+        .catch(error => {
+            res.send(error)
+        })
 })
 
 router.get('/text', (req, res) => {
