@@ -12,6 +12,8 @@ router.get('/', (req, res) => {
             console.log(`OLD RAW DATA: ${response}`)
             console.log(`OLD BOOKS: ${response.data.results}`)
             console.log(`OLD FIRST BOOK: ${response.data.results[0]}`)
+            console.log(`OLD FIRST KEYS: ${Object.keys(response.data.results[0])}`)
+            console.log(`OLD FIRST PROPERTIES: ${Object.getOwnPropertyNames(response.data.results[0])}`)
             console.log(`OLD FIRST TITLE: ${response.data.results[0].title}`)
             res.render('books/index', {
                 books: response.data.results,
@@ -80,6 +82,8 @@ router.get('/rated', (req, res) => {
                 .then(final => {
                     console.log(`FINAL BOOKS: ${final}`)
                     console.log(`FINAL FIRST BOOK: ${final[0]}`)
+                    console.log(`FINAL FIRST KEYS: ${Object.keys(final[0])}`)
+                    console.log(`FINAL FIRST PROPERTIES: ${Object.getOwnPropertyNames(final[0])}`)
                     // console.log(`FINAL FIRST DATA: ${final[0].data}`)
                     // console.log(`FINAL FIRST BOOK: ${final[0].data.results}`)
                     console.log(`FINAL FIRST TITLE: ${final[0].title}`)
