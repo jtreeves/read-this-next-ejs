@@ -178,7 +178,6 @@ router.get('/rated', (req, res) => {
                     console.log(`OUTPUT[0]: ${output[0]}`)
                     console.log(`OUTPUT[0].DATA: ${output[0].data}`)
                     console.log(`OUTPUT[0].DATA.RESULTS: ${output[0].data.results}`)
-                    console.log(`OUTPUT STRINGIFY: ${JSON.stringify(output)}`)
                     console.log(`OUTPUT KEYS: ${Object.keys(output)}`)
                     console.log(`OUTPUT[0] KEYS: ${Object.keys(output[0])}`)
                     console.log(`OUTPUT[0].DATA KEYS: ${Object.keys(output[0].data)}`)
