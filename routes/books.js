@@ -7,11 +7,15 @@ router.get('/', (req, res) => {
     axios
         .get(`http://gutendex.com/books?languages=en&copyright=false`)
         .then(response => {
-            console.log(`OLD BOOKS: ${response.data.results}`)
-            console.log(`OLD FIRST BOOK: ${response.data.results[0]}`)
-            console.log(`OLD FIRST KEYS: ${Object.keys(response.data.results[0])}`)
-            console.log(`OLD FIRST PROPERTIES: ${Object.getOwnPropertyNames(response.data.results[0])}`)
-            console.log(`OLD FIRST TITLE: ${response.data.results[0].title}`)
+            console.log(`RESPONSE: ${response}`)
+            console.log(`RESPONSE.DATA: ${response.data}`)
+            console.log(`RESPONSE.DATA.RESULTS: ${response.data.results}`)
+            console.log(`RESPONSE.DATA.RESULTS[0]: ${response.data.results[0]}`)
+            console.log(`RESPONSE KEYS: ${Object.keys(response)}`)
+            console.log(`RESPONSE.DATA KEYS: ${Object.keys(response.data)}`)
+            console.log(`RESPONSE.DATA.RESULTS KEYS: ${Object.keys(response.data.results)}`)
+            console.log(`RESPONSE.DATA.RESULTS[0] KEYS: ${Object.keys(response.data.results[0])}`)
+            console.log(`RESPONSE.DATA.RESULTS[0].TITLE: ${response.data.results[0].title}`)
             res.render('books/index', {
                 books: response.data.results,
                 currentUser: res.locals.currentUser
@@ -76,6 +80,13 @@ router.get('/rated', (req, res) => {
                 .all(outputs)
                 .then(output => {
                     console.log(`OUTPUT: ${output}`)
+                    console.log(`OUTPUT.DATA: ${output.data}`)
+                    console.log(`OUTPUT.DATA.RESULTS: ${output.data.results}`)
+                    console.log(`OUTPUT.DATA.RESULTS[0]: ${output.data.results[0]}`)
+                    console.log(`OUTPUT KEYS: ${Object.keys(output)}`)
+                    console.log(`OUTPUT.DATA KEYS: ${Object.keys(output.data)}`)
+                    console.log(`OUTPUT.DATA.RESULTS KEYS: ${Object.keys(output.data.results)}`)
+                    console.log(`OUTPUT.DATA.RESULTS[0] KEYS: ${Object.keys(output.data.results[0])}`)
                     console.log(`OUTPUT[0]: ${output[0]}`)
                     console.log(`OUTPUT[0].DATA: ${output[0].data}`)
                     console.log(`OUTPUT[0].DATA.RESULTS: ${output[0].data.results}`)
