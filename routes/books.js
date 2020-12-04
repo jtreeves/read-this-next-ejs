@@ -4,12 +4,9 @@ const axios = require('axios').default
 const db = require('../models')
 
 router.get('/', (req, res) => {
-    // Currently, this query variable doesn't do anything; before it was at the end of the axios get request
-    // const query = req.query
     axios
         .get(`http://gutendex.com/books?languages=en&copyright=false`)
         .then(response => {
-            console.log(`OLD RAW DATA: ${response}`)
             console.log(`OLD BOOKS: ${response.data.results}`)
             console.log(`OLD FIRST BOOK: ${response.data.results[0]}`)
             console.log(`OLD FIRST KEYS: ${Object.keys(response.data.results[0])}`)
@@ -68,13 +65,11 @@ router.get('/rated', (req, res) => {
         .then(responses => {
             const outputs = []
             responses.forEach(response => {
-                const thing = response.get()
-                const thingId = thing.bookId
                 outputs.push(
                     axios
-                        .get(`http://gutendex.com/books?languages=en&copyright=false&ids=${thingId}`)
-                        .then(potato => potato.data.results)
-                        .catch(error => res.send(error))
+                        .get(`http://gutendex.com/books?languages=en&copyright=false&ids=${response.bookId}`)
+                        .then(output => output.data.results)
+                        .catch(err => res.send(err))
                 )
             })
             Promise
@@ -84,12 +79,10 @@ router.get('/rated', (req, res) => {
                     console.log(`FINAL FIRST BOOK: ${final[0]}`)
                     console.log(`FINAL FIRST KEYS: ${Object.keys(final[0])}`)
                     console.log(`FINAL FIRST PROPERTIES: ${Object.getOwnPropertyNames(final[0])}`)
-                    // console.log(`FINAL FIRST DATA: ${final[0].data}`)
-                    // console.log(`FINAL FIRST BOOK: ${final[0].data.results}`)
                     console.log(`FINAL FIRST TITLE: ${final[0].title}`)
                     res.render('books/rated', { books: final })
                 })
-                .catch(err => res.send(err))
+                .catch(problem => res.send(problem))
         })
         .catch(error => {
             res.send(error)
