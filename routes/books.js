@@ -206,16 +206,18 @@ router.get('/rated', (req, res) => {
         })
         .then(responses => {
             // Create array that maps over database query array to add object for each row, containing keys of bookId and rating
-            let outputs = responses.map(response => {
-                let eachDataSet = {
-                    id: response.bookId,
-                    rating: response.value
+            let outputs = []
+            for (let i = 0; i < responses.length; i++) {
+                outputs[i] = {
+                    id: responses[i].bookId,
+                    rating: responses[i].value
                 }
-            })
+            }
             // Iterate through query array to create new array just containing the bookId values
-            let idArray = outputs.map(output => {
-                let eachId = output.id
-            })
+            let idArray = []
+            for (let i = 0; i < outputs.length; i++) {
+                idArray[i] = outputs[i].id
+            }
             // Condense array into string in format to run API query
             let idString = idArray.toString()
             let queryString = `&ids=${idString}`
@@ -224,15 +226,16 @@ router.get('/rated', (req, res) => {
                 .get(url + queryString)
                 .then(bookMaterials => {
                     // Create array that maps over API query array to add object for each book, containing keys for important topics (e.g., id, title, author, subject)
-                    let allInfo = bookMaterials.map(bookMaterial => {
-                        let importantFields = {
-                            id: bookMaterial.data.results.id,
-                            title: bookMaterial.data.results.title,
-                            authors: bookMaterial.data.results.authors,
-                            subjects: bookMaterial.data.results.subjects,
-                            formats: bookMaterial.data.results.formats
+                    let allInfo = []
+                    for (let i = 0; i < bookMaterials.length; i++) {
+                        allInfo[i] = {
+                            id: bookMaterials[i].data.results.id,
+                            title: bookMaterials[i].data.results.title,
+                            authors: bookMaterials[i].data.results.authors,
+                            subjects: bookMaterials[i].data.results.subjects,
+                            formats: bookMaterials[i].data.results.formats
                         }
-                    })
+                    }
                     // Iterate over new API array to add the previously created objects as values for a materials key in object from the first ray, based on matching id's
                     for (let i = 0; i < outputs.length; i++) {
                         outputs[i].materials = allInfo[allInfo.indexOf(outputs[i].id)]

@@ -2,6 +2,6 @@
 <p>This page will display a list of all the books that you have rated. You can update their ratings at any time. Rate more books to add them to this page!</p>
 <ul>
     <% books.forEach(book => { %>
-        <li><p>You rated <%= book.title %></p></li>
+        <li><p>You rated <%= book.materials.title %> a score of <%= book.rating %>  stars!</p></li>
     <% }) %> 
 </ul>
