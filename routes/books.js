@@ -49,9 +49,7 @@ router.get('/rated', (req, res) => {
                     console.log(`BOOKMATERIALSRESULTS[O].TITLE: ${bookMaterialsResults[0].title}`)
                     console.log(`BOOKMATERIALSRESULTS[O].ID: ${bookMaterialsResults[0].id}`)
                     for (let i = 0; i < outputs.length; i++) {
-                        outputs[i].materials = { title: 'RANDOM TITLE', author: 'RANDOM AUTHOR' }
-                        
-                        // bookMaterialsResults[bookMaterialsResults.indexOf(outputs[i].id)]
+                        outputs[i].materials = bookMaterialsResults[i]
                     }
                     res.render('books/rated', {
                         books: outputs
