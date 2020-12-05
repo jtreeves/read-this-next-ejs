@@ -237,29 +237,24 @@ router.get('/rated', (req, res) => {
                     console.log(`BOOKMATERIALS.DATA.RESULTS.LENGTH: ${bookMaterials.data.results.length}`)
                     console.log(`BOOKMATERIALS.DATA.RESULTS[0]: ${bookMaterials.data.results[0]}`)
                     console.log(`BOOKMATERIALS.DATA.RESULTS[0].TITLE: ${bookMaterials.data.results[0].title}`)
-                    console.log(`BOOKMATERIALS[0]: ${bookMaterials[0]}`)
-                    console.log(`BOOKMATERIALS[0].DATA: ${bookMaterials[0].data}`)
-                    console.log(`BOOKMATERIALS[0].DATA.RESULTS: ${bookMaterials[0].data.results}`)
-                    console.log(`BOOKMATERIALS[0].DATA.RESULTS.TITLE: ${bookMaterials[0].data.results.title}`)
-                    let allInfo = []
-                    for (let i = 0; i < bookMaterials.length; i++) {
-                        allInfo[i] = {
-                            id: bookMaterials[i].data.results.id,
-                            title: bookMaterials[i].data.results.title,
-                            authors: bookMaterials[i].data.results.authors,
-                            subjects: bookMaterials[i].data.results.subjects,
-                            formats: bookMaterials[i].data.results.formats
-                        }
-                    }
-                    console.log(`ALLINFO: ${allInfo}`)
+                    // console.log(`BOOKMATERIALS[0]: ${bookMaterials[0]}`)
+                    // console.log(`BOOKMATERIALS[0].DATA: ${bookMaterials[0].data}`)
+                    // console.log(`BOOKMATERIALS[0].DATA.RESULTS: ${bookMaterials[0].data.results}`)
+                    // console.log(`BOOKMATERIALS[0].DATA.RESULTS.TITLE: ${bookMaterials[0].data.results.title}`)
+                    let bookMaterialsResults = bookMaterials.data.results
+                    // let allInfo = []
+                    // for (let i = 0; i < bookMaterialsResults.length; i++) {
+                    //     allInfo[i] = bookMaterialsResults[i]
+                    // }
+                    // console.log(`ALLINFO: ${allInfo}`)
                     // Iterate over new API array to add the previously created objects as values for a materials key in object from the first ray, based on matching id's
                     for (let i = 0; i < outputs.length; i++) {
-                        outputs[i].materials = allInfo[allInfo.indexOf(outputs[i].id)]
+                        outputs[i].materials = bookMaterialsResults[bookMaterialsResults.indexOf(outputs[i].id)]
                     }
-                    console.log(`OUTPUTS: ${outpusts}`)
-                    console.log(`OUTPUTS[0]: ${outpusts[0]}`)
-                    console.log(`OUTPUTS[0].ID: ${outpusts[0].id}`)
-                    console.log(`OUTPUTS[0].RATING: ${outpusts[0].rating}`)
+                    console.log(`OUTPUTS: ${outputs}`)
+                    console.log(`OUTPUTS[0]: ${outputs[0]}`)
+                    console.log(`OUTPUTS[0].ID: ${outputs[0].id}`)
+                    console.log(`OUTPUTS[0].RATING: ${outputs[0].rating}`)
                     console.log(`OUTPUTS[0].MATERIALS.TITLE: ${outpusts[0].materials.title}`)
                     // Render page with original array fed into it
                     res.render('books/rated', { books: outputs })
