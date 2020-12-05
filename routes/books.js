@@ -25,34 +25,30 @@ router.get('/rated', (req, res) => {
             where: { userId: res.locals.currentUser.id }
         })
         .then(responses => {
-            let outputs = []
+            let books = []
             for (let i = 0; i < responses.length; i++) {
-                outputs[i] = {
+                books[i] = {
                     id: responses[i].bookId,
                     rating: responses[i].value
                 }
             }
-            let idArray = []
-            for (let i = 0; i < outputs.length; i++) {
-                idArray[i] = outputs[i].id
+            let ids = []
+            for (let i = 0; i < books.length; i++) {
+                ids[i] = books[i].id
             }
-            let idString = idArray.toString()
-            let queryString = `&ids=${idString}`
             axios
-                .get(url + queryString)
-                .then(bookMaterials => {
-                    let bookMaterialsResults = bookMaterials.data.results
-                    for (let i = 0; i < outputs.length; i++) {
-                        let outputsId = outputs[i].id
-                        for (let j = 0; j < bookMaterialsResults.length; j++) {
-                            let bookMaterialsResultsId = bookMaterialsResults[j].id
-                            if (outputsId === bookMaterialsResultsId) {
-                                outputs[i].materials = bookMaterialsResults[j]
+                .get(url + `&ids=${ids.toString()}`)
+                .then(outputs => {
+                    let materials = outputs.data.results
+                    for (let i = 0; i < books.length; i++) {
+                        for (let j = 0; j < materials.length; j++) {
+                            if (books[i].id === materials[j].id) {
+                                books[i].materials = materials[j]
                             }
                         }
                     }
                     res.render('books/rated', {
-                        books: outputs
+                        books
                     })
                 })
                 .catch(problem => res.send(problem))
