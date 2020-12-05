@@ -261,8 +261,8 @@ router.get('/rated', (req, res) => {
                     // }
                     // Render page with original array fed into it
                     res.render('books/rated', {
-                        books: bookMaterials.data.results,
-                        ratings: responses
+                        books: bookMaterials.data.results
+                        // ratings: responses
                     })
                 })
                 .catch(problem => res.send(problem))
