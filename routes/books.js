@@ -210,18 +210,18 @@ router.get('/rated', (req, res) => {
             // console.log(`RESPONSES[0]: ${responses[0]}`)
             // console.log(`RESPONSES[0].BOOKID: ${responses[0].bookId}`)
             // console.log(`RESPONSES[0].VALUE: ${responses[0].value}`)
-            // let outputs = []
-            // for (let i = 0; i < responses.length; i++) {
-            //     outputs[i] = {
-            //         id: responses[i].bookId,
-            //         rating: responses[i].value
-            //     }
-            // }
+            let outputs = []
+            for (let i = 0; i < responses.length; i++) {
+                outputs[i] = {
+                    id: responses[i].bookId,
+                    rating: responses[i].value
+                }
+            }
             // console.log(`OUTPUTS: ${outputs}`)
             // Iterate through query array to create new array just containing the bookId values
             let idArray = []
-            for (let i = 0; i < responses.length; i++) {
-                idArray[i] = responses[i].id
+            for (let i = 0; i < outputs.length; i++) {
+                idArray[i] = outputs[i].id
             }
             console.log(`IDARRAY: ${idArray}`)
             // Condense array into string in format to run API query
