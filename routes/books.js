@@ -255,7 +255,7 @@ router.get('/rated', (req, res) => {
                     console.log(`OUTPUTS[0]: ${outputs[0]}`)
                     console.log(`OUTPUTS[0].ID: ${outputs[0].id}`)
                     console.log(`OUTPUTS[0].RATING: ${outputs[0].rating}`)
-                    console.log(`OUTPUTS[0].MATERIALS.TITLE: ${outpusts[0].materials.title}`)
+                    console.log(`OUTPUTS[0].MATERIALS.TITLE: ${outputs[0].materials.title}`)
                     // Render page with original array fed into it
                     res.render('books/rated', { books: outputs })
                 })
