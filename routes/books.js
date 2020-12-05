@@ -3,9 +3,11 @@ const router = express.Router()
 const axios = require('axios').default
 const db = require('../models')
 
+const url = 'http://gutendex.com/books?languages=en&copyright=false'
+
 router.get('/', (req, res) => {
     axios
-        .get(`http://gutendex.com/books?languages=en&copyright=false`)
+        .get(url)
         .then(response => {
             console.log(`RESPONSE: ${response}`)
             console.log(`RESPONSE.DATA: ${response.data}`)
@@ -158,41 +160,124 @@ router.get('/suggestion', (req, res) => {
 //         })
 // })
 
+// ORIGINAL PROMISE VERSION
+// router.get('/rated', (req, res) => {
+//     db.rating
+//         .findAll({
+//             where: { userId: res.locals.currentUser.id }
+//         })
+//         .then(responses => {
+//             const outputs = []
+//             responses.forEach(response => {
+//                 outputs.push(
+//                     axios
+//                         .get(`http://gutendex.com/books?languages=en&copyright=false&ids=${response.bookId}`)
+//                         .then(final => final.data.results)
+//                         .catch(err => res.send(err))
+//                 )
+//             })
+//             Promise
+//                 .all(outputs)
+//                 .then(output => {
+//                     console.log(`OUTPUT: ${output}`)
+//                     console.log(`OUTPUT.DATA: ${output.data}`)
+//                     console.log(`OUTPUT.DATA.RESULTS: ${output.data.results}`)
+//                     console.log(`OUTPUT.DATA.RESULTS[0]: ${output.data.results[0]}`)
+//                     console.log(`OUTPUT KEYS: ${Object.keys(output)}`)
+//                     console.log(`OUTPUT.DATA KEYS: ${Object.keys(output.data)}`)
+//                     console.log(`OUTPUT.DATA.RESULTS KEYS: ${Object.keys(output.data.results)}`)
+//                     console.log(`OUTPUT.DATA.RESULTS[0] KEYS: ${Object.keys(output.data.results[0])}`)
+//                     console.log(`OUTPUT.DATA.RESULTS[0].TITLE: ${output.data.results[0].title}`)
+//                     res.render('books/rated', { books: output })
+//                 })
+//                 .catch(problem => res.send(problem))
+//         })
+//         .catch(error => {
+//             res.send(error)
+//         })
+// })
+
 router.get('/rated', (req, res) => {
     db.rating
+        // Query database
         .findAll({
+            // Find all rows meeting criteria
             where: { userId: res.locals.currentUser.id }
         })
         .then(responses => {
-            const outputs = []
-            responses.forEach(response => {
-                outputs.push(
-                    axios
-                        .get(`http://gutendex.com/books?languages=en&copyright=false&ids=${response.bookId}`)
-                        .then(final => final.data.results)
-                        .catch(err => res.send(err))
-                )
+            // Create array that maps over database query array to add object for each row, containing keys of bookId and rating
+            let outputs = responses.map(response => {
+                let eachDataSet = {
+                    id: response.bookId,
+                    rating: response.value
+                }
             })
-            Promise
-                .all(outputs)
-                .then(output => {
-                    console.log(`OUTPUT: ${output}`)
-                    console.log(`OUTPUT.DATA: ${output.data}`)
-                    console.log(`OUTPUT.DATA.RESULTS: ${output.data.results}`)
-                    console.log(`OUTPUT.DATA.RESULTS[0]: ${output.data.results[0]}`)
-                    console.log(`OUTPUT KEYS: ${Object.keys(output)}`)
-                    console.log(`OUTPUT.DATA KEYS: ${Object.keys(output.data)}`)
-                    console.log(`OUTPUT.DATA.RESULTS KEYS: ${Object.keys(output.data.results)}`)
-                    console.log(`OUTPUT.DATA.RESULTS[0] KEYS: ${Object.keys(output.data.results[0])}`)
-                    console.log(`OUTPUT.DATA.RESULTS[0].TITLE: ${output.data.results[0].title}`)
-                    res.render('books/rated', { books: output })
+            // Iterate through query array to create new array just containing the bookId values
+            let idArray = outputs.map(output => {
+                let eachId = output.id
+            })
+            // Condense array into string in format to run API query
+            let idString = idArray.toString()
+            let queryString = `&ids=${idString}`
+            axios
+                // Call API with query
+                .get(url + queryString)
+                .then(bookMaterials => {
+                    // Create array that maps over API query array to add object for each book, containing keys for important topics (e.g., id, title, author, subject)
+                    let allInfo = bookMaterials.map(bookMaterial => {
+                        let importantFields = {
+                            id: bookMaterial.data.results.id,
+                            title: bookMaterial.data.results.title,
+                            authors: bookMaterial.data.results.authors,
+                            subjects: bookMaterial.data.results.subjects,
+                            formats: bookMaterial.data.results.formats
+                        }
+                    })
+                    // Iterate over new API array to add the previously created objects as values for a materials key in object from the first ray, based on matching id's
+                    for (let i = 0; i < outputs.length; i++) {
+                        outputs[i].materials = allInfo[allInfo.indexOf(outputs[i].id)]
+                    }
+                    // Render page with original array fed into it
+                    res.render('books/rated', { books: outputs })
                 })
-                .catch(problem => res.send(problem))
-        })
-        .catch(error => {
-            res.send(error)
         })
 })
+
+// router.get('/rated', (req, res) => {
+//     db.rating
+//         .findAll({
+//             where: { userId: res.locals.currentUser.id }
+//         })
+//         .then(responses => {
+//             const outputs = []
+//             responses.forEach(response => {
+//                 outputs.push(
+//                     axios
+//                         .get(`http://gutendex.com/books?languages=en&copyright=false&ids=${response.bookId}`)
+//                         .then(final => final.data.results)
+//                         .catch(err => res.send(err))
+//                 )
+//             })
+//             Promise
+//                 .all(outputs)
+//                 .then(output => {
+//                     console.log(`OUTPUT: ${output}`)
+//                     console.log(`OUTPUT.DATA: ${output.data}`)
+//                     console.log(`OUTPUT.DATA.RESULTS: ${output.data.results}`)
+//                     console.log(`OUTPUT.DATA.RESULTS[0]: ${output.data.results[0]}`)
+//                     console.log(`OUTPUT KEYS: ${Object.keys(output)}`)
+//                     console.log(`OUTPUT.DATA KEYS: ${Object.keys(output.data)}`)
+//                     console.log(`OUTPUT.DATA.RESULTS KEYS: ${Object.keys(output.data.results)}`)
+//                     console.log(`OUTPUT.DATA.RESULTS[0] KEYS: ${Object.keys(output.data.results[0])}`)
+//                     console.log(`OUTPUT.DATA.RESULTS[0].TITLE: ${output.data.results[0].title}`)
+//                     res.render('books/rated', { books: output })
+//                 })
+//                 .catch(problem => res.send(problem))
+//         })
+//         .catch(error => {
+//             res.send(error)
+//         })
+// })
 
 // router.get('/rated', (req, res) => {
 //     db.rating
