@@ -206,6 +206,7 @@ router.get('/rated', (req, res) => {
         })
         .then(responses => {
             // Create array that maps over database query array to add object for each row, containing keys of bookId and rating
+            console.log(`RESPONSES: ${responses}`)
             let outputs = []
             for (let i = 0; i < responses.length; i++) {
                 outputs[i] = {
@@ -213,19 +214,33 @@ router.get('/rated', (req, res) => {
                     rating: responses[i].value
                 }
             }
+            console.log(`OUTPUTS: ${outputs}`)
             // Iterate through query array to create new array just containing the bookId values
             let idArray = []
             for (let i = 0; i < outputs.length; i++) {
                 idArray[i] = outputs[i].id
             }
+            console.log(`IDARRAY: ${idArray}`)
             // Condense array into string in format to run API query
             let idString = idArray.toString()
             let queryString = `&ids=${idString}`
+            console.log(`QUERYSTRING: ${queryString}`)
+            console.log(`FULL URL STRING: ${url + queryString}`)
             axios
                 // Call API with query
                 .get(url + queryString)
                 .then(bookMaterials => {
                     // Create array that maps over API query array to add object for each book, containing keys for important topics (e.g., id, title, author, subject)
+                    console.log(`BOOKMATERIALS: ${bookMaterials}`)
+                    console.log(`BOOKMATERIALS.DATA: ${bookMaterials.data}`)
+                    console.log(`BOOKMATERIALS.DATA.RESULTS: ${bookMaterials.data.results}`)
+                    console.log(`BOOKMATERIALS.DATA.RESULTS.LENGTH: ${bookMaterials.data.results.length}`)
+                    console.log(`BOOKMATERIALS.DATA.RESULTS[0]: ${bookMaterials.data.results[0]}`)
+                    console.log(`BOOKMATERIALS.DATA.RESULTS[0].TITLE: ${bookMaterials.data.results[0].title}`)
+                    console.log(`BOOKMATERIALS[0]: ${bookMaterials[0]}`)
+                    console.log(`BOOKMATERIALS[0].DATA: ${bookMaterials[0].data}`)
+                    console.log(`BOOKMATERIALS[0].DATA.RESULTS: ${bookMaterials[0].data.results}`)
+                    console.log(`BOOKMATERIALS[0].DATA.RESULTS.TITLE: ${bookMaterials[0].data.results.title}`)
                     let allInfo = []
                     for (let i = 0; i < bookMaterials.length; i++) {
                         allInfo[i] = {
@@ -236,14 +251,22 @@ router.get('/rated', (req, res) => {
                             formats: bookMaterials[i].data.results.formats
                         }
                     }
+                    console.log(`ALLINFO: ${allInfo}`)
                     // Iterate over new API array to add the previously created objects as values for a materials key in object from the first ray, based on matching id's
                     for (let i = 0; i < outputs.length; i++) {
                         outputs[i].materials = allInfo[allInfo.indexOf(outputs[i].id)]
                     }
+                    console.log(`OUTPUTS: ${outpusts}`)
+                    console.log(`OUTPUTS[0]: ${outpusts[0]}`)
+                    console.log(`OUTPUTS[0].ID: ${outpusts[0].id}`)
+                    console.log(`OUTPUTS[0].RATING: ${outpusts[0].rating}`)
+                    console.log(`OUTPUTS[0].MATERIALS.TITLE: ${outpusts[0].materials.title}`)
                     // Render page with original array fed into it
                     res.render('books/rated', { books: outputs })
                 })
+                .catch(problem => res.send(problem))
         })
+        .catch(error => res.send(error))
 })
 
 // router.get('/rated', (req, res) => {
