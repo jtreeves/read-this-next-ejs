@@ -42,14 +42,14 @@ router.get('/rated', (req, res) => {
                 .get(url + queryString)
                 .then(bookMaterials => {
                     let bookMaterialsResults = bookMaterials.data.results
-                    console.log(`OUTPUTS[0].RATING: ${outputs[0].rating}`)
-                    console.log(`OUTPUTS[0].ID: ${outputs[0].id}`)
-                    console.log(`BOOKMATERIALSRESULTS[O]: ${bookMaterialsResults[0]}`)
-                    console.log(`BOOKMATERIALSRESULTS[O] KEYS: ${Object.keys(bookMaterialsResults[0])}`)
-                    console.log(`BOOKMATERIALSRESULTS[O].TITLE: ${bookMaterialsResults[0].title}`)
-                    console.log(`BOOKMATERIALSRESULTS[O].ID: ${bookMaterialsResults[0].id}`)
                     for (let i = 0; i < outputs.length; i++) {
-                        outputs[i].materials = bookMaterialsResults[i]
+                        let outputsId = outputs[i].id
+                        for (let j = 0; j < bookMaterialsResults.length; j++) {
+                            let bookMaterialsResultsId = bookMaterialsResults[j].id
+                            if (outputsId === bookMaterialsResultsId) {
+                                outputs[i].materials = bookMaterialsResults[j]
+                            }
+                        }
                     }
                     res.render('books/rated', {
                         books: outputs
