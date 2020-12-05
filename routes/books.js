@@ -42,8 +42,13 @@ router.get('/rated', (req, res) => {
                 .get(url + queryString)
                 .then(bookMaterials => {
                     let bookMaterialsResults = bookMaterials.data.results
+                    console.log(`OUTPUTS[0].RATING: ${outputs[0].rating}`)
+                    console.log(`BOOKMATERIALSRESULTS[O].TITLE: ${bookMaterialsResults[0].title}`)
+                    // for (let i = 0; i < outputs.length; i++) {
+                    //     outputs[i].materials = bookMaterialsResults[bookMaterialsResults.indexOf(outputs[i].id)]
+                    // }
                     res.render('books/rated', {
-                        books: bookMaterialsResults
+                        books: outputs
                     })
                 })
                 .catch(problem => res.send(problem))
