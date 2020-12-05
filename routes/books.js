@@ -206,19 +206,22 @@ router.get('/rated', (req, res) => {
         })
         .then(responses => {
             // Create array that maps over database query array to add object for each row, containing keys of bookId and rating
-            console.log(`RESPONSES: ${responses}`)
-            let outputs = []
-            for (let i = 0; i < responses.length; i++) {
-                outputs[i] = {
-                    id: responses[i].bookId,
-                    rating: responses[i].value
-                }
-            }
-            console.log(`OUTPUTS: ${outputs}`)
+            // console.log(`RESPONSES: ${responses}`)
+            // console.log(`RESPONSES[0]: ${responses[0]}`)
+            // console.log(`RESPONSES[0].BOOKID: ${responses[0].bookId}`)
+            // console.log(`RESPONSES[0].VALUE: ${responses[0].value}`)
+            // let outputs = []
+            // for (let i = 0; i < responses.length; i++) {
+            //     outputs[i] = {
+            //         id: responses[i].bookId,
+            //         rating: responses[i].value
+            //     }
+            // }
+            // console.log(`OUTPUTS: ${outputs}`)
             // Iterate through query array to create new array just containing the bookId values
             let idArray = []
-            for (let i = 0; i < outputs.length; i++) {
-                idArray[i] = outputs[i].id
+            for (let i = 0; i < responses.length; i++) {
+                idArray[i] = responses[i].id
             }
             console.log(`IDARRAY: ${idArray}`)
             // Condense array into string in format to run API query
@@ -241,23 +244,26 @@ router.get('/rated', (req, res) => {
                     // console.log(`BOOKMATERIALS[0].DATA: ${bookMaterials[0].data}`)
                     // console.log(`BOOKMATERIALS[0].DATA.RESULTS: ${bookMaterials[0].data.results}`)
                     // console.log(`BOOKMATERIALS[0].DATA.RESULTS.TITLE: ${bookMaterials[0].data.results.title}`)
-                    let bookMaterialsResults = bookMaterials.data.results
+                    // let bookMaterialsResults = bookMaterials.data.results
                     // let allInfo = []
                     // for (let i = 0; i < bookMaterialsResults.length; i++) {
                     //     allInfo[i] = bookMaterialsResults[i]
                     // }
                     // console.log(`ALLINFO: ${allInfo}`)
                     // Iterate over new API array to add the previously created objects as values for a materials key in object from the first ray, based on matching id's
-                    for (let i = 0; i < outputs.length; i++) {
-                        outputs[i].materials = bookMaterialsResults[bookMaterialsResults.indexOf(outputs[i].id)]
-                    }
-                    console.log(`OUTPUTS: ${outputs}`)
-                    console.log(`OUTPUTS[0]: ${outputs[0]}`)
-                    console.log(`OUTPUTS[0].ID: ${outputs[0].id}`)
-                    console.log(`OUTPUTS[0].RATING: ${outputs[0].rating}`)
-                    console.log(`OUTPUTS[0].MATERIALS.TITLE: ${outputs[0].materials.title}`)
+                    // for (let i = 0; i < outputs.length; i++) {
+                    //     outputs[i].materials = bookMaterialsResults[bookMaterialsResults.indexOf(outputs[i].id)]
+                    //     console.log(`OUTPUTS: ${outputs}`)
+                    //     console.log(`OUTPUTS[0]: ${outputs[0]}`)
+                    //     console.log(`OUTPUTS[0].ID: ${outputs[0].id}`)
+                    //     console.log(`OUTPUTS[0].RATING: ${outputs[0].rating}`)
+                    //     console.log(`OUTPUTS[0].MATERIALS.TITLE: ${outputs[0].materials.title}`)
+                    // }
                     // Render page with original array fed into it
-                    res.render('books/rated', { books: outputs })
+                    res.render('books/rated', {
+                        books: bookMaterials.data.results,
+                        ratings: responses
+                    })
                 })
                 .catch(problem => res.send(problem))
         })
