@@ -36,16 +36,14 @@ router.get('/rated', (req, res) => {
             for (let i = 0; i < outputs.length; i++) {
                 idArray[i] = outputs[i].id
             }
-            console.log(`IDARRAY: ${idArray}`)
             let idString = idArray.toString()
             let queryString = `&ids=${idString}`
-            console.log(`QUERYSTRING: ${queryString}`)
-            console.log(`FULL URL STRING: ${url + queryString}`)
             axios
                 .get(url + queryString)
                 .then(bookMaterials => {
+                    let bookMaterialsResults = bookMaterials.data.results
                     res.render('books/rated', {
-                        books: bookMaterials.data.results
+                        books: bookMaterialsResults
                     })
                 })
                 .catch(problem => res.send(problem))
