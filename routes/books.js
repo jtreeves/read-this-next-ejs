@@ -72,8 +72,19 @@ router.get('/read', (req, res) => {
                 read: true
             }
         })
-        .then(response => {
-            res.render('books/read', { statuses: response })
+        .then(responses => {
+            const ids = []
+            for (let i = 0; i < responses.length; i++) {
+                ids[i] = responses[i].bookId
+            }
+            axios
+                .get(url + `&ids=${ids.toString()}`)
+                .then(outputs => {
+                    res.render('books/read', {
+                        books: outputs.data.results
+                    })
+                })
+                .catch(problem => res.send(problem))
         })
         .catch(error => res.send(error))
 })
