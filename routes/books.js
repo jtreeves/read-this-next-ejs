@@ -17,6 +17,18 @@ router.get('/', (req, res) => {
         .catch(error => res.send(error))
 })
 
+router.get('/favorites', (req, res) => {
+    res.render('books/favorites')
+})
+
+router.get('/suggestion', (req, res) => {
+    res.render('books/suggestion')
+})
+
+router.get('/text', (req, res) => {
+    res.render('books/text')
+})
+
 router.get('/rated', (req, res) => {
     db.rating
         .findAll({
