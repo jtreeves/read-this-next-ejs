@@ -8,15 +8,13 @@ const url = 'http://gutendex.com/books?languages=en&copyright=false'
 router.get('/', (req, res) => {
     axios
         .get(url)
-        .then(response => {
+        .then(responses => {
             res.render('books/index', {
-                books: response.data.results,
+                books: responses.data.results,
                 currentUser: res.locals.currentUser
             })
         })
-        .catch(error => {
-            res.send(error)
-        })
+        .catch(error => res.send(error))
 })
 
 router.get('/rated', (req, res) => {
@@ -63,12 +61,9 @@ router.get('/read', (req, res) => {
             }
         })
         .then(response => {
-            console.log(`STATUSES RESPONSE VARIABLE: ${response}`)
             res.render('books/read', { statuses: response })
         })
-        .catch(error => {
-            res.send(error)
-        })
+        .catch(error => res.send(error))
 })
 
 router.post('/rated', (req, res) => {
@@ -78,12 +73,8 @@ router.post('/rated', (req, res) => {
             bookId: req.body.bookId,
             value: req.body.value
         })
-        .then(response => {
-            res.redirect('/books')
-        })
-        .catch(error => {
-            res.send(error)
-        })
+        .then(() => res.redirect('/books'))
+        .catch(error => res.send(error))
 })
 
 router.post('/read', (req, res) => {
@@ -93,12 +84,8 @@ router.post('/read', (req, res) => {
             bookId: req.body.bookId,
             read: req.body.read
         })
-        .then(response => {
-            res.redirect('/books')
-        })
-        .catch(error => {
-            res.send(error)
-        })
+        .then(() => res.redirect('/books'))
+        .catch(error => res.send(error))
 })
 
 module.exports = router
