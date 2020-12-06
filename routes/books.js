@@ -25,21 +25,21 @@ router.get('/rated', (req, res) => {
             where: { userId: res.locals.currentUser.id }
         })
         .then(responses => {
-            let books = []
+            const books = []
             for (let i = 0; i < responses.length; i++) {
                 books[i] = {
                     id: responses[i].bookId,
                     rating: responses[i].value
                 }
             }
-            let ids = []
+            const ids = []
             for (let i = 0; i < books.length; i++) {
                 ids[i] = books[i].id
             }
             axios
                 .get(url + `&ids=${ids.toString()}`)
                 .then(outputs => {
-                    let materials = outputs.data.results
+                    const materials = outputs.data.results
                     for (let i = 0; i < books.length; i++) {
                         for (let j = 0; j < materials.length; j++) {
                             if (books[i].id === materials[j].id) {
