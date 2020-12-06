@@ -47,9 +47,7 @@ router.get('/rated', (req, res) => {
                             }
                         }
                     }
-                    res.render('books/rated', {
-                        books
-                    })
+                    res.render('books/rated', { books })
                 })
                 .catch(problem => res.send(problem))
         })
