@@ -145,8 +145,8 @@ router.get('/suggestion', isLoggedIn, (req, res) => {
 })
 
 // GET route for text
-router.get('/text', isLoggedIn, (req, res) => {
-    const id = req.query.id
+router.get('/text/:id', isLoggedIn, (req, res) => {
+    const id = req.params.id
     axios
         .get(url + `&ids=${id}`)
         .then(response => {
@@ -274,7 +274,7 @@ router.post('/pass', (req, res) => {
             userId: req.body.userId,
             bookId: req.body.bookId
         })
-        .then(() => res.redirect('/books'))
+        .then(() => res.redirect('/books/suggestion'))
         .catch(() => res.status(400).render('404'))
 })
 

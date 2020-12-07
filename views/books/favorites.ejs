@@ -3,7 +3,7 @@
 <% books.forEach(book => { %>
     <div class="well">
         <em><%= book.title %></em>
-        <form action="/books/text" method="GET">
+        <form action="/books/text/<%= book.id %>" method="GET">
             <indivut name="id" value="<%= book.id %>" type="hidden">
             <input type="submit" value="Read Book">
         </form>
