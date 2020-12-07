@@ -2,6 +2,17 @@
 <p>This page will display a list of all the books that you have rated. You can update their ratings at any time. Rate more books to add them to this page!</p>
 <ul>
     <% books.forEach(book => { %>
-        <li><p>You rated <%= book.materials.title %> with <%= book.rating %> stars!</p></li>
+        <li>
+            <p>
+                You rated <%= book.materials.title %> with <%= book.rating %> stars!
+                <form action="/books/<%= book.id %>?_method=PUT" method="POST">
+                    <label for="value">Rating (1-5):</label>
+                    <input id="value" name="value" type="text">
+                    <input name="bookId" value="<%= book.id %>" type="hidden">
+                    <input name="userId" value="<%= currentUser.id %>" type="hidden">
+                    <input type="submit" value="Change Rating">
+                </form>
+            </p>
+        </li>
     <% }) %> 
 </ul>

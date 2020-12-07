@@ -170,7 +170,10 @@ router.get('/rated', (req, res) => {
                             }
                         }
                     }
-                    res.render('books/rated', { books })
+                    res.render('books/rated', {
+                        books,
+                        currentUser: res.locals.currentUser
+                    })
                 })
                 .catch(problem => res.send(problem))
         })
@@ -240,6 +243,24 @@ router.post('/pass', (req, res) => {
             userId: req.body.userId,
             bookId: req.body.bookId
         })
+        .then(() => res.redirect('/books'))
+        .catch(error => res.send(error))
+})
+
+router.put('/:id', (req, res) => {
+    const id = req.params.id
+    db.rating
+        .update(
+            {
+                value: req.body.value
+            },
+            {
+                where: {
+                    userId: req.body.userId,
+                    bookId: req.body.bookId
+                }
+            }
+        )
         .then(() => res.redirect('/books'))
         .catch(error => res.send(error))
 })

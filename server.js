@@ -7,6 +7,9 @@ const flash = require('connect-flash')
 const SECRET_SESSION = process.env.SECRET_SESSION
 const app = express()
 
+const methodOverride = require('method-override')
+app.use(methodOverride('_method'))
+
 // isLoggedIn middleware
 const isLoggedIn = require('./middleware/isLoggedIn')
 
