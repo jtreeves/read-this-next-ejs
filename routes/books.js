@@ -238,7 +238,7 @@ router.post('/rated', (req, res) => {
             bookId: req.body.bookId,
             value: req.body.value
         })
-        .then(() => res.redirect('/books'))
+        .then(() => res.redirect('/books/rated'))
         .catch(() => res.status(400).render('404'))
 })
 
@@ -250,7 +250,7 @@ router.post('/read', (req, res) => {
             bookId: req.body.bookId,
             read: req.body.read
         })
-        .then(() => res.redirect('/books'))
+        .then(() => res.redirect('/books/read'))
         .catch(() => res.status(400).render('404'))
 })
 
@@ -261,7 +261,7 @@ router.post('/favorites', (req, res) => {
             userId: req.body.userId,
             bookId: req.body.bookId
         })
-        .then(() => res.redirect('/books'))
+        .then(() => res.redirect('/books/favorites'))
         .catch(() => res.status(400).render('404'))
 })
 
@@ -290,7 +290,7 @@ router.put('/:id', (req, res) => {
                 }
             }
         )
-        .then(() => res.redirect('/books'))
+        .then(() => res.redirect('/books/rated'))
         .catch(() => res.status(400).render('404'))
 })
 
@@ -303,7 +303,7 @@ router.delete('/:id', (req, res) => {
                 bookId: req.body.bookId
             }
         })
-        .then(() => res.redirect('/books'))
+        .then(() => res.redirect('/books/favorites'))
         .catch(() => res.status(400).render('404'))
 })
 
