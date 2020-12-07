@@ -23,6 +23,14 @@ h2 {
     color: darkblue;
 }
 
-.white {
+.alert {
     color: white;
+}
+
+.alert-error {
+    background: red;
+}
+
+.alert-success {
+    background: green;
 }
