@@ -14,8 +14,9 @@ function randomElement(array) {
 }
 
 function findDuplicates(mainTitle, testTitle) {
-    const mainStripped = mainTitle.replace(/[^a-zA-Z0-9]/g, '')
-    const testStripped = testTitle.replace(/[^a-zA-Z0-9]/g, '')
+    const mainStripped = mainTitle.replace(/[^a-zA-Z0-9 ]/g, '')
+    const testStripped = testTitle.replace(/[^a-zA-Z0-9 ]/g, '')
+    console.log(`TESTSTRIPPED: ${testStripped}`)
     const mainArray = mainStripped.split(' ')
     let mainShort = ''
     if (mainArray.length >= 3) {
@@ -24,11 +25,9 @@ function findDuplicates(mainTitle, testTitle) {
     } else {
         mainShort = mainStripped
     }
-    if (testStripped.includes(mainShort)) {
-        return true
-    } else {
-        return false
-    }
+    console.log(`MAINSHORT: ${mainShort}`)
+    console.log(`INCLUDES: ${testStripped.includes(mainShort)}`)
+    return testStripped.includes(mainShort)
 }
 
 router.get('/', (req, res) => {
