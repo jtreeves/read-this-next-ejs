@@ -10,9 +10,11 @@ nav ul li {
 }
 
 h1 {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color: blue;
 }
 
 h2 {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color: darkblue;
 }
