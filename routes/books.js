@@ -157,7 +157,8 @@ router.get('/text', isLoggedIn, (req, res) => {
                 .then(output => {
                     res.render('books/text', {
                         book: bookObject,
-                        text: output.data
+                        text: output.data,
+                        currentUser: res.locals.currentUser
                     })
                 })
                 .catch(() => res.status(400).render('404'))
@@ -222,7 +223,8 @@ router.get('/read', isLoggedIn, (req, res) => {
                 .get(url + `&ids=${ids.toString()}`)
                 .then(outputs => {
                     res.render('books/read', {
-                        books: outputs.data.results
+                        books: outputs.data.results,
+                        currentUser: res.locals.currentUser
                     })
                 })
                 .catch(() => res.status(400).render('404'))
