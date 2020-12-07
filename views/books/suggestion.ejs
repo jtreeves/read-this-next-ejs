@@ -1,7 +1,7 @@
 <h2>Suggestion</h2>
 <p>Here's a randomly generated book recommendation for you!</p>
 <div class="well">
-    <%= book.title %>
+    <em><%= book.title %></em>
     <form action="/books/favorites" method="POST">
         <input name="bookId" value="<%= book.id %>" type="hidden">
         <input name="userId" value="<%= currentUser.id %>" type="hidden">

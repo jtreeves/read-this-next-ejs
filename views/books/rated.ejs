@@ -5,7 +5,7 @@
         <div class="well">
             <li>
                 <p>
-                    You rated <%= book.materials.title %> with <%= book.rating %> stars!
+                    You rated <em><%= book.materials.title %></em> with <%= book.rating %> stars!
                     <form action="/books/<%= book.id %>?_method=PUT" method="POST">
                         <label for="value">Rating (1-5):</label>
                         <input id="value" name="value" type="text">

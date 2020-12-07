@@ -5,7 +5,7 @@
         <div class="well">
             <li>
                 <p>
-                    <%= book.title %>
+                    <em><%= book.title %></em>
                     <form action="/books/rated" method="POST">
                         <label for="value">Rating (1-5):</label>
                         <input id="value" name="value" type="text">

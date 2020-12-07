@@ -5,7 +5,7 @@
         <div class="well">
             <li>
                 <p> 
-                    <%= book.title %>
+                    <em><%= book.title %></em>
                     <form action="/books/text" method="GET">
                         <input name="id" value="<%= book.id %>" type="hidden">
                         <input type="submit" value="Read Book">
