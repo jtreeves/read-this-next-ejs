@@ -28,10 +28,12 @@ router.get('/suggestion', (req, res) => {
         .findAll({
             where: {
                 userId: res.locals.currentUser.id,
-                value: { [op.gte]: 3 }
-            }
+                value: 5
+            },
+            limit: 1
         })
         .then(responses => {
+            console.log(`RESPONSES[0].BOOKID: ${responses[0].bookId}`)
             const ids = []
             for (let i = 0; i < responses.length; i++) {
                 ids[i] = responses[i].bookId
@@ -40,7 +42,7 @@ router.get('/suggestion', (req, res) => {
                 .get(url + `&ids=${ids.toString()}`)
                 .then(outputs => {
                     res.render('books/suggestion', {
-                        books: outputs.data.results
+                        book: outputs.data.results[0]
                     })
                 })
                 .catch(problem => res.send(problem))
@@ -49,29 +51,7 @@ router.get('/suggestion', (req, res) => {
 })
 
 router.get('/text', (req, res) => {
-    db.rating
-        .findAll({
-            where: {
-                userId: res.locals.currentUser.id,
-                value: 5
-            },
-            limit: 1
-        })
-        .then(responses => {
-            const ids = []
-            for (let i = 0; i < responses.length; i++) {
-                ids[i] = responses[i].bookId
-            }
-            axios
-                .get(url + `&ids=${ids.toString()}`)
-                .then(outputs => {
-                    res.render('books/text', {
-                        books: outputs.data.results
-                    })
-                })
-                .catch(problem => res.send(problem))
-        })
-        .catch(error => res.send(error))
+    res.render('books/text')
 })
 
 router.get('/rated', (req, res) => {
