@@ -1,6 +1,18 @@
-# Express Authentication
+# Read This Next
 
-Express authentication template using Passport + flash messages + custom middleware
+An app for getting book recommendations based on your preferences
+
+## ERD
+![Database](/images/reading.png)
+
+## User Stories
+
+## Wireframes
+![Homepage](/images/homepage.png)
+![Create Account](/images/create-account.png)
+![Unrated Books](/images/unrated-books.png)
+![Book Suggestion](/images/book-suggestion.png)
+![Reading List](/images/reading-list.png)
 
 ## What it includes
 
