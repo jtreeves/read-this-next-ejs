@@ -120,7 +120,8 @@ router.get('/suggestion', (req, res) => {
 })
 
 router.get('/text', (req, res) => {
-    const id = req.body.bookId
+    const id = req.query.bookId
+    console.log(`FULL TEXT ID: ${id}`)
     axios
         .get(url + `&ids=${id}`)
         .then(response => {
