@@ -36,8 +36,9 @@ router.get('/suggestion', (req, res) => {
             axios
                 .get(url + `&ids=${responses[math.floor(math.random()*responses.length)].bookId}`)
                 .then(output => {
+                    const subjects = output.data.results[0].subjects
                     axios
-                        .get(url + `&topic=${output.data.results[0].subjects[0].split(' ')[0]}`)
+                        .get(url + `&topic=${subjects[math.floor(math.random()*subjects.length)].split(' ')[0]}`)
                         .then(elements => {
                             const ids = []
                             const materials = elements.data.results
