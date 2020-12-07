@@ -2,118 +2,49 @@
 
 An app for getting book recommendations based on your preferences
 
+## Visit Site
+
+You can view a live version of this app on Heroku:
+[Read This Next](https://read-this-next.herokuapp.com/)
+
+## Installation
+
+### Download
+
+1. Fork and clone this directory to your local computer
+2. Run `npm install` to get the necessary dependencies
+
+### Set Up
+
+1. Set up your `.env` file with a secret session key
+2. Run `sequelize db:create readnext_development` to add the a database to your Postgres that will interact with the app
+3. Migrate the models with `sequelize db:migrate`
+
+### Run Locally
+
+1. Run `nodemon` when in your local directory
+2. Access the site on your browser at `localhost:3000`
+
 ## ERD
+
 ![Database](/images/reading.png)
 
 ## User Stories
 
+1. A user can use the app by visiting the site, creating an account, and logging into their account.
+2. A user can rate random books from a database of more than 50,000 books on a scale from 1 to 5.
+3. A user can receive random book recommendations based on how they rated previous books.
+4. A user can pass on random book recommendations if they have no desire to have that particular book recommended to them again, or a user can add random book recommendations to their reading list if they want to read that book at a later point in time.
+5. A user can view a list of all the books they have previously rated, and the user can view a list of all the books they have previously added to their reading list.
+6. A user can change their rating of any book.
+7. A user can remove a book from their reading list.
+8. A user can mark books as read.
+9. A user can view a list of all the books they have marked as read.
+
 ## Wireframes
+
 ![Homepage](/images/homepage.png)
 ![Create Account](/images/create-account.png)
 ![Unrated Books](/images/unrated-books.png)
 ![Book Suggestion](/images/book-suggestion.png)
 ![Reading List](/images/reading-list.png)
-
-## What it includes
-
-* Sequelize user model / migration
-* Settings for PostgreSQL
-* Passport and passport-local for authentication
-* Sessions to keep user logged in between pages
-* Flash messages for errors and successes
-* Passwords that are hashed with BCrypt
-* EJS Templating and EJS Layouts
-
-### User Model
-
-| Column Name | Data Type | Notes |
-| --------------- | ------------- | ------------------------------ |
-| id | Integer | Serial Primary Key, Auto-generated |
-| name | String | Must be provided |
-| email | String | Must be unique / used for login |
-| password | String | Stored as a hash |
-| createdAt | Date | Auto-generated |
-| updatedAt | Date | Auto-generated |
-
-### Default Routes
-
-| Method | Path | Location | Purpose |
-| ------ | ---------------- | -------------- | ------------------- |
-| GET | / | server.js | Home page |
-| GET | /auth/login | auth.js | Login form |
-| GET | /auth/signup | auth.js | Signup form |
-| POST | /auth/login | auth.js | Login user |
-| POST | /auth/signup | auth.js | Creates User |
-| GET | /auth/logout | auth.js | Removes session info |
-| GET | /profile | server.js | Regular User Profile |
-
-## Steps To Use
-
-#### 1. Create a new repo on Github and use your 'express-authentication' as the template
-
-When we are finished with this boilerplate, we are going to make it a template on Github that will allow us to create a new repo on Github with all this code already loaded in.
-* Go to `github.com` and create a new repository. In the template dropdown, choose this template.
-* Clone your new repo to your local machine
-* Get Codin'!
-
-#### 2. Delete any .keep files
-
-The `.keep` files are there to maintain the file structure of the auth. If there is a folder that has nothing in it, git won't add it. The dev work around is to add a file to it that has nothing in it, just forces git to keep the folder so we can use it later.
-
-#### 3. Install node modules from the package.json
-
-```
-npm install
-```
-
-(Or just `npm i` for short)
-
-#### 4. Customize with new project name
-
-Remove defaulty type stuff. Some areas to consider are:
-
-* Title in `layout.ejs`
-* Description/Repo Link in `package.json`
-* Remove boilerplate's README content and replace with new project's readme
-
-#### 5. Create a new database for the new project
-
-Using the sequelize command line interface, you can create a new database from the terminal.
-
-```
-createdb <new_db_name>
-```
-
-#### 6. Update `config.json`
-
-* Change the database name
-* Other settings are likely okay, but check username, password, and dialect
-
-#### 7. Check the models and migrations for relevance to your project's needs
-
-For example, if your project requires a birthdate field, then don't add that in there. 
-
-> When changing your models, update both the model and the migration.
-
-#### 8. Run the migrations
-
-```
-sequelize db:migrate
-```
-
-#### 9. Add a `.env` file with the following fields:
-
-* SESSION_SECRET: Can be any random string; usually a hash in production
-* PORT: Usually 3000 or 8000
-
-#### 10. Run server; make sure it works
-
-```
-nodemon
-```
-
-or
-
-```
-node index.js
-```
