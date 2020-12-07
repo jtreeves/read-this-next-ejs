@@ -1,20 +1,23 @@
 body {
     font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 20px;
     text-align: center;
 }
 
 nav ul li {
-    display: block;
+    display: inline-block;
     text-decoration: none;
     margin: 10px;
 }
 
 h1 {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 60px;
     color: blue;
 }
 
 h2 {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 40px;
     color: darkblue;
 }
