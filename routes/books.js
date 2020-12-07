@@ -44,7 +44,7 @@ router.get('/', (req, res) => {
                 currentUser: res.locals.currentUser
             })
         })
-        .catch(error => res.send(error))
+        .catch(() => res.status(400).render('404'))
 })
 
 router.get('/favorites', (req, res) => {
@@ -65,9 +65,9 @@ router.get('/favorites', (req, res) => {
                         currentUser: res.locals.currentUser
                     })
                 })
-                .catch(problem => res.send(problem))
+                .catch(() => res.status(400).render('404'))
         })
-        .catch(error => res.send(error))
+        .catch(() => res.status(400).render('404'))
 })
 
 router.get('/suggestion', (req, res) => {
@@ -117,7 +117,7 @@ router.get('/suggestion', (req, res) => {
                                                             currentUser:user
                                                         })
                                                     })
-                                                    .catch(flaw => res.send(flaw))
+                                                    .catch(() => res.status(400).render('404'))
                                             } else {
                                                 finalSelection()
                                             }
@@ -125,14 +125,14 @@ router.get('/suggestion', (req, res) => {
                                             finalSelection()
                                         }
                                     })
-                                    .catch(discard => res.send(discard))
+                                    .catch(() => res.status(400).render('404'))
                             }
                         })
-                        .catch(rejection => res.send(rejection))
+                        .catch(() => res.status(400).render('404'))
                 })
-                .catch(problem => res.send(problem))
+                .catch(() => res.status(400).render('404'))
         })
-        .catch(error => res.send(error))
+        .catch(() => res.status(400).render('404'))
 })
 
 router.get('/text', (req, res) => {
@@ -150,9 +150,9 @@ router.get('/text', (req, res) => {
                         text: output.data
                     })
                 })
-                .catch(problem => res.send(problem))
+                .catch(() => res.status(400).render('404'))
         })
-        .catch(error => res.send(error))
+        .catch(() => res.status(400).render('404'))
 })
 
 router.get('/rated', (req, res) => {
@@ -188,9 +188,9 @@ router.get('/rated', (req, res) => {
                         currentUser: res.locals.currentUser
                     })
                 })
-                .catch(problem => res.send(problem))
+                .catch(() => res.status(400).render('404'))
         })
-        .catch(error => res.send(error))
+        .catch(() => res.status(400).render('404'))
 })
 
 router.get('/read', (req, res) => {
@@ -213,9 +213,9 @@ router.get('/read', (req, res) => {
                         books: outputs.data.results
                     })
                 })
-                .catch(problem => res.send(problem))
+                .catch(() => res.status(400).render('404'))
         })
-        .catch(error => res.send(error))
+        .catch(() => res.status(400).render('404'))
 })
 
 router.post('/rated', (req, res) => {
@@ -226,7 +226,7 @@ router.post('/rated', (req, res) => {
             value: req.body.value
         })
         .then(() => res.redirect('/books'))
-        .catch(error => res.send(error))
+        .catch(() => res.status(400).render('404'))
 })
 
 router.post('/read', (req, res) => {
@@ -237,7 +237,7 @@ router.post('/read', (req, res) => {
             read: req.body.read
         })
         .then(() => res.redirect('/books'))
-        .catch(error => res.send(error))
+        .catch(() => res.status(400).render('404'))
 })
 
 router.post('/favorites', (req, res) => {
@@ -247,7 +247,7 @@ router.post('/favorites', (req, res) => {
             bookId: req.body.bookId
         })
         .then(() => res.redirect('/books'))
-        .catch(error => res.send(error))
+        .catch(() => res.status(400).render('404'))
 })
 
 router.post('/pass', (req, res) => {
@@ -257,7 +257,7 @@ router.post('/pass', (req, res) => {
             bookId: req.body.bookId
         })
         .then(() => res.redirect('/books'))
-        .catch(error => res.send(error))
+        .catch(() => res.status(400).render('404'))
 })
 
 router.put('/:id', (req, res) => {
@@ -274,7 +274,7 @@ router.put('/:id', (req, res) => {
             }
         )
         .then(() => res.redirect('/books'))
-        .catch(error => res.send(error))
+        .catch(() => res.status(400).render('404'))
 })
 
 router.delete('/:id', (req, res) => {
@@ -286,7 +286,7 @@ router.delete('/:id', (req, res) => {
             }
         })
         .then(() => res.redirect('/books'))
-        .catch(error => res.send(error))
+        .catch(() => res.status(400).render('404'))
 })
 
 module.exports = router
