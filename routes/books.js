@@ -32,9 +32,9 @@ router.get('/suggestion', (req, res) => {
                 value: 5
             }
         })
-        .then(response => {
+        .then(responses => {
             axios
-                .get(url + `&ids=${response[0].bookId}`)
+                .get(url + `&ids=${responses[math.floor(math.random()*responses.length)].bookId}`)
                 .then(output => {
                     axios
                         .get(url + `&topic=${output.data.results[0].subjects[0].split(' ')[0]}`)
