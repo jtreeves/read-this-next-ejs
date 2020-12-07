@@ -120,7 +120,13 @@ router.get('/suggestion', (req, res) => {
 })
 
 router.get('/text', (req, res) => {
-    res.render('books/text')
+    const id = req.body.bookId
+    axios
+        .get(url + `&ids=${id}`)
+        .then(response => {
+            res.render('books/text', { book: response.data.results[0] })
+        })
+        .catch(error => res.send(error))
 })
 
 router.get('/rated', (req, res) => {
