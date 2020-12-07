@@ -54,7 +54,8 @@ router.get('/text', (req, res) => {
             where: {
                 userId: res.locals.currentUser.id,
                 value: { [op.eq]: 5 },
-            }
+            },
+            limit: 1
         })
         .then(responses => {
             const ids = []
