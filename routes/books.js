@@ -3,6 +3,7 @@ const axios = require('axios').default
 const db = require('../models')
 const sequelize = require('sequelize')
 const math = require('mathjs')
+// const regex = require('rejex')
 
 const router = express.Router()
 const op = sequelize.Op
@@ -10,6 +11,24 @@ const url = 'http://gutendex.com/books?languages=en&copyright=false'
 
 function randomElement(array) {
     return array[math.floor(math.random() * array.length)]
+}
+
+function findDuplicates(mainTitle, testTitle) {
+    const mainStripped = mainTitle.replace(/[^a-zA-Z0-9]/g, '')
+    const testStripped = testTitle.replace(/[^a-zA-Z0-9]/g, '')
+    const mainArray = mainStripped.split(' ')
+    let mainShort = ''
+    if (mainArray.length >= 3) {
+        const mainSliced = mainArray.slice(0, 3)
+        mainShort = mainSliced.join(' ')
+    } else {
+        mainShort = mainStripped
+    }
+    if (testStripped.includes(mainShort)) {
+        return true
+    } else {
+        return false
+    }
 }
 
 router.get('/', (req, res) => {
@@ -42,8 +61,10 @@ router.get('/suggestion', (req, res) => {
                 .get(url + `&ids=${randomStarredId}`)
                 .then(output => {
                     const starredBook = output.data.results[0]
+                    console.log(`STARREDBOOK.TITLE: ${starredBook.title}`)
                     const starredSubjects = starredBook.subjects
                     const randomStarredSubject = randomElement(starredSubjects).split(' ')[0]
+                    console.log(`RANDOMSTARREDSUBJECT: ${randomStarredSubject}`)
                     axios
                         .get(url + `&topic=${randomStarredSubject}`)
                         .then(elements => {
@@ -55,9 +76,11 @@ router.get('/suggestion', (req, res) => {
                             console.log(`IDS: ${ids}`)
                             finalSelection()
                             function finalSelection() {
-                                let randomId = randomElement(ids)
+                                const randomId = randomElement(ids)
                                 console.log(`RANDOMID: ${randomId}`)
-                                if (materials[materials.findIndex(object => object.id === randomId)].title !== starredBook.title) {
+                                const randomBook = materials[materials.findIndex(object => object.id === randomId)]
+                                console.log(`RANDOMBOOK.TITLE: ${randomBook.title}`)
+                                if (!findDuplicates(starredBook.title, randomBook.title)) {
                                     axios
                                         .get(url + `&ids=${randomId}`)
                                         .then(product => {
