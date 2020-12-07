@@ -3,10 +3,14 @@ body {
     text-align: center;
 }
 
-nav ul li {
+ul li {
+    display: block;
     text-decoration: none;
-    display: inline-block;
     margin: 10px;
+}
+
+nav ul li {
+    display: inline-block;
 }
 
 h1 {

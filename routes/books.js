@@ -15,7 +15,7 @@ function randomElement(array) {
 function randomIds() {
     const ids = []
     for (let i = 0; i < 10; i++) {
-        ids[i] = math.floor(math.random() * 50000)
+        ids[i] = math.floor(math.random() * 10000)
     }
     return ids
 }

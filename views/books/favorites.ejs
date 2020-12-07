@@ -2,19 +2,21 @@
 <p>A list of all the books that you have added to your reading list will appear on this page.</p>
 <ul>
     <% books.forEach(book => { %>
-        <li>
-            <p>
-                <%= book.title %>
-                <form action="/books/text" method="GET">
-                    <input name="id" value="<%= book.id %>" type="hidden">
-                    <input type="submit" value="Read Book">
-                </form>
-                <form action="/books/<%= book.id %>?_method=DELETE" method="POST">
-                    <input name="bookId" value="<%= book.id %>" type="hidden">
-                    <input name="userId" value="<%= currentUser.id %>" type="hidden">
-                    <input type="submit" value="Remove from Reading List">
-                </form>
-            </p>
-        </li>
+        <div class="well">
+            <li>
+                <p> 
+                    <%= book.title %>
+                    <form action="/books/text" method="GET">
+                        <input name="id" value="<%= book.id %>" type="hidden">
+                        <input type="submit" value="Read Book">
+                    </form>
+                    <form action="/books/<%= book.id %>?_method=DELETE" method="POST">
+                        <input name="bookId" value="<%= book.id %>" type="hidden">
+                        <input name="userId" value="<%= currentUser.id %>" type="hidden">
+                        <input type="submit" value="Remove from Reading List">
+                    </form>
+                </p>
+            </li>
+        </div>
     <% }) %> 
 </ul>

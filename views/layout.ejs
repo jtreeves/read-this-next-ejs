@@ -4,11 +4,12 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Read This Next</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
         <link rel="stylesheet" href="/css/style.css">
     </head>
     <body>
         <%- include('partials/alerts') %> 
-        <header>
+        <header class="container">
             <h1>Read This Now</h1>
             <nav>
                 <ul>
@@ -28,11 +29,14 @@
                 </ul>
             </nav>
         </header>
-        <%- body %>
+        <main class="container">
+            <%- body %>
+        </main>
         <form action="/auth/login" method="POST">
             <input type="hidden" name="email" value="apple@gmail.com">
             <input type="hidden" name="password" value="apple1234">
             <input type="submit">
         </form> 
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     </body>
 </html>
