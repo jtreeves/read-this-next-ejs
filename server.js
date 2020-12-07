@@ -52,7 +52,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/profile', isLoggedIn, (req, res) => {
-    res.render('profile')
+    res.render('profile', { user: res.locals.currentUser.id })
 })
 
 app.use('/auth', require('./routes/auth'))
