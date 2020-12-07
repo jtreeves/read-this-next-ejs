@@ -30,8 +30,7 @@ router.get('/suggestion', (req, res) => {
             where: {
                 userId: res.locals.currentUser.id,
                 value: 5
-            },
-            limit: 1
+            }
         })
         .then(response => {
             axios
