@@ -54,12 +54,8 @@ app.get('/', (req, res) => {
 
 app.get('/profile', isLoggedIn, (req, res) => {
     db.user
-        .findAll({
-            where: { id: res.locals.currentUser.id }
-        })
+        .findByPk(res.locals.currentUser.id)
         .then(response => {
-            console.log(`USER RESPONSE: ${response}`)
-            console.log(`USER RESPONSE NAME: ${response.name}`)
             res.render('profile', { user: response })
         })
         .catch(() => res.status(400).render('404'))
