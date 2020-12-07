@@ -84,7 +84,8 @@ router.get('/suggestion', (req, res) => {
                                         .get(url + `&ids=${randomId}`)
                                         .then(product => {
                                             res.render('books/suggestion', {
-                                                book: product.data.results[0]
+                                                book: product.data.results[0],
+                                                currentUser: res.locals.currentUser
                                             })
                                         })
                                         .catch(flaw => res.send(flaw))

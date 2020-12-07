@@ -1,3 +1,13 @@
 <h2>Suggestion</h2>
 <p>Here's a randomly generated book recommendation for you!</p>
 <%= book.title %>
+<form action="/books/favorites" method="POST">
+    <input name="bookId" value="<%= book.id %>" type="hidden">
+    <input name="userId" value="<%= currentUser.id %>" type="hidden">
+    <input type="submit" value="Add to Reading List">
+</form>
+<form action="/books/pass" method="POST">
+    <input name="bookId" value="<%= book.id %>" type="hidden">
+    <input name="userId" value="<%= currentUser.id %>" type="hidden">
+    <input type="submit" value="Never Get This Book Recommended Again">
+</form>
