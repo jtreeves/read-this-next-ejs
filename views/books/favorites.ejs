@@ -6,7 +6,7 @@
             <p>
                 <%= book.title %>
                 <form action="/books/text" method="GET">
-                    <input name="bookId" value="<%= book.id %>" type="hidden">
+                    <input name="id" value="<%= book.id %>" type="hidden">
                     <input type="submit" value="Read Book">
                 </form>
             </p>

@@ -119,15 +119,15 @@ router.get('/suggestion', (req, res) => {
         .catch(error => res.send(error))
 })
 
-router.get('/text', (req, res) => {
-    const id = req.query.bookId
+router.get('/:id', (req, res) => {
+    const id = req.query.id
     console.log(`FULL TEXT ID: ${id}`)
     axios
         .get(url + `&ids=${id}`)
         .then(response => {
             const bookObject = response.data.results[0]
             console.log(`BOOKOBJECT.TITLE: ${bookObject.title}`)
-            const bookUrl = bookObject.formats['text/html; charset=utf-8']
+            const bookUrl = bookObject.formats['text/plain; charset=utf-8']
             console.log(`BOOKURL: ${bookUrl}`)
             axios
                 .get(bookUrl)
