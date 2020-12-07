@@ -53,7 +53,7 @@ router.get('/text', (req, res) => {
         .findAll({
             where: {
                 userId: res.locals.currentUser.id,
-                value: { [op.eq]: 5 },
+                value: 5
             },
             limit: 1
         })
