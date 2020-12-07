@@ -43,7 +43,25 @@ router.get('/', (req, res) => {
 })
 
 router.get('/favorites', (req, res) => {
-    res.render('books/favorites')
+    db.favorite
+        .findAll({
+            where: { userId: res.locals.currentUser.id }
+        })
+        .then(responses => {
+            const ids = []
+            for (let i = 0; i < responses.length; i++) {
+                ids[i] = responses[i].bookId
+            }
+            axios
+                .get(url + `&ids=${ids.toString()}`)
+                .then(outputs => {
+                    res.render('books/favorites', {
+                        books: outputs.data.results
+                    })
+                })
+                .catch(problem => res.send(problem))
+        })
+        .catch(error => res.send(error))
 })
 
 router.get('/suggestion', (req, res) => {
