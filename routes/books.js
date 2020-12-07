@@ -125,7 +125,19 @@ router.get('/text', (req, res) => {
     axios
         .get(url + `&ids=${id}`)
         .then(response => {
-            res.render('books/text', { book: response.data.results[0] })
+            const bookObject = response.data.results[0]
+            console.log(`BOOKOBJECT.TITLE: ${bookObject.title}`)
+            const bookUrl = bookObject.formats['text/html; charset=utf-8']
+            console.log(`BOOKURL: ${bookUrl}`)
+            axios
+                .get(bookUrl)
+                .then(output => {
+                    res.render('books/text', {
+                        book: bookObject,
+                        text: output.data
+                    })
+                })
+                .catch(problem => res.send(problem))
         })
         .catch(error => res.send(error))
 })
