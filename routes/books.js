@@ -8,6 +8,10 @@ const router = express.Router()
 const op = sequelize.Op
 const url = 'http://gutendex.com/books?languages=en&copyright=false'
 
+function randomElement(array) {
+    return array[math.floor(math.random() * array.length)]
+}
+
 router.get('/', (req, res) => {
     axios
         .get(url)
@@ -34,11 +38,11 @@ router.get('/suggestion', (req, res) => {
         })
         .then(responses => {
             axios
-                .get(url + `&ids=${responses[math.floor(math.random()*responses.length)].bookId}`)
+                .get(url + `&ids=${randomElement(responses).bookId}`)
                 .then(output => {
                     const subjects = output.data.results[0].subjects
                     axios
-                        .get(url + `&topic=${subjects[math.floor(math.random()*subjects.length)].split(' ')[0]}`)
+                        .get(url + `&topic=${randomElement(subjects).split(' ')[0]}`)
                         .then(elements => {
                             const ids = []
                             const materials = elements.data.results
@@ -46,7 +50,7 @@ router.get('/suggestion', (req, res) => {
                                 ids[i] = materials[i].id
                             }
                             axios
-                                .get(url + `&ids=${ids[math.floor(math.random()*ids.length)]}`)
+                                .get(url + `&ids=${randomElement(ids)}`)
                                 .then(product => {
                                     res.render('books/suggestion', {
                                         book: product.data.results[0]
