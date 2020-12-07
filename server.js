@@ -52,7 +52,14 @@ app.get('/', (req, res) => {
 })
 
 app.get('/profile', isLoggedIn, (req, res) => {
-    res.render('profile', { user: res.locals.currentUser.id })
+    db.user
+        .findAll({
+            where: { id: res.locals.currentUser.id }
+        })
+        .then(response => {
+            res.render('profile', { user: response })
+        })
+        .catch(() => res.status(400).render('404'))
 })
 
 app.use('/auth', require('./routes/auth'))
