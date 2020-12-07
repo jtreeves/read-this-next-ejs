@@ -37,26 +37,39 @@ router.get('/suggestion', (req, res) => {
             }
         })
         .then(responses => {
+            const randomStarredId = randomElement(responses).bookId
             axios
-                .get(url + `&ids=${randomElement(responses).bookId}`)
+                .get(url + `&ids=${randomStarredId}`)
                 .then(output => {
-                    const subjects = output.data.results[0].subjects
+                    const starredBook = output.data.results[0]
+                    const starredSubjects = starredBook.subjects
+                    const randomStarredSubject = randomElement(starredSubjects).split(' ')[0]
                     axios
-                        .get(url + `&topic=${randomElement(subjects).split(' ')[0]}`)
+                        .get(url + `&topic=${randomStarredSubject}`)
                         .then(elements => {
                             const ids = []
                             const materials = elements.data.results
                             for (let i = 0; i < materials.length; i++) {
                                 ids[i] = materials[i].id
                             }
-                            axios
-                                .get(url + `&ids=${randomElement(ids)}`)
-                                .then(product => {
-                                    res.render('books/suggestion', {
-                                        book: product.data.results[0]
-                                    })
-                                })
-                                .catch(flaw => res.send(flaw))
+                            console.log(`IDS: ${ids}`)
+                            finalSelection()
+                            function finalSelection() {
+                                let randomId = randomElement(ids)
+                                console.log(`RANDOMID: ${randomId}`)
+                                if (materials[materials.findIndex(object => object.id === randomId)].title !== starredBook.title) {
+                                    axios
+                                        .get(url + `&ids=${randomId}`)
+                                        .then(product => {
+                                            res.render('books/suggestion', {
+                                                book: product.data.results[0]
+                                            })
+                                        })
+                                        .catch(flaw => res.send(flaw))
+                                } else {
+                                    finalSelection()
+                                }
+                            }
                         })
                         .catch(rejection => res.send(rejection))
                 })
