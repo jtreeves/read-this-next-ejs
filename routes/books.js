@@ -2,6 +2,7 @@ const express = require('express')
 const axios = require('axios').default
 const db = require('../models')
 const sequelize = require('sequelize')
+const math = require('mathjs')
 
 const router = express.Router()
 const op = sequelize.Op
@@ -39,9 +40,19 @@ router.get('/suggestion', (req, res) => {
                     axios
                         .get(url + `&topic=${output.data.results[0].subjects[0].split(' ')[0]}`)
                         .then(elements => {
-                            res.render('books/suggestion', {
-                                books: elements.data.results
-                            })
+                            const ids = []
+                            const materials = elements.data.results
+                            for (let i = 0; i < materials.length; i++) {
+                                ids[i] = materials[i].id
+                            }
+                            axios
+                                .get(url + `&ids=${ids[math.floor(math.random()*ids.length)]}`)
+                                .then(product => {
+                                    res.render('books/suggestion', {
+                                        book: product.data.results[0]
+                                    })
+                                })
+                                .catch(flaw => res.send(flaw))
                         })
                         .catch(rejection => res.send(rejection))
                 })
