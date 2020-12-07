@@ -1,9 +1,7 @@
 <h2>Your Read Books</h2>
 <p>Here is a list of all the books you have read. As you read more books in your reading list, make sure to mark them as read, so they will show up here.</p>
-<ul>
-    <% books.forEach(book => { %>
-        <div class="well">
-            <li><p><em><%= book.title %></em></p></li>
-        </div>
-    <% }) %> 
-</ul>
+<% books.forEach(book => { %>
+    <p class="well">
+        <em><%= book.title %></em>
+    </p>
+<% }) %>

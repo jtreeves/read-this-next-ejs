@@ -1,27 +1,21 @@
 <h2>Rate These Books</h2>
 <p>Here are some randomly selected books for you to rate. Rate as many books as you can, so we can give you the most personal suggestions possible!</p>
-<ul>
-    <% books.forEach(book => { %>
-        <div class="well">
-            <li>
-                <p>
-                    <em><%= book.title %></em>
-                    <form action="/books/rated" method="POST">
-                        <label for="value">Rating (1-5):</label>
-                        <input id="value" name="value" type="text">
-                        <input name="bookId" value="<%= book.id %>" type="hidden">
-                        <input name="userId" value="<%= currentUser.id %>" type="hidden">
-                        <input type="submit" value="Submit Rating">
-                    </form>
-                    <form action="/books/read" method="POST">
-                        <label for="read">Read (true/false):</label>
-                        <input id="read" name="read" type="text">
-                        <input name="bookId" value="<%= book.id %>" type="hidden">
-                        <input name="userId" value="<%= currentUser.id %>" type="hidden">
-                        <input type="submit" value="Submit Read Status">
-                    </form>
-                </p>
-            </li>
-        </div>
-    <% }) %>
-</ul>
+<% books.forEach(book => { %>
+    <p class="well">
+        <em><%= book.title %></em>
+        <form action="/books/rated" method="POST">
+            <label for="value">Rating (1-5):</label>
+            <input id="value" name="value" type="text">
+            <input name="bookId" value="<%= book.id %>" type="hidden">
+            <input name="userId" value="<%= currentUser.id %>" type="hidden">
+            <input type="submit" value="Submit Rating">
+        </form>
+        <form action="/books/read" method="POST">
+            <label for="read">Read (true/false):</label>
+            <input id="read" name="read" type="text">
+            <input name="bookId" value="<%= book.id %>" type="hidden">
+            <input name="userId" value="<%= currentUser.id %>" type="hidden">
+            <input type="submit" value="Submit Read Status">
+        </form>
+    </p>
+<% }) %>
