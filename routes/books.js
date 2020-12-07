@@ -120,11 +120,11 @@ router.get('/favorites', (req, res) => {
 })
 
 router.get('/suggestion', (req, res) => {
-    const user = res.locals.currentUser.id
+    const user = res.locals.currentUser
     db.rating
         .findAll({
             where: {
-                userId: user,
+                userId: user.id,
                 value: 5
             }
         })
@@ -156,7 +156,7 @@ router.get('/suggestion', (req, res) => {
                                 db.pass
                                     .findAndCountAll({
                                         where: {
-                                            userId: user,
+                                            userId: user.id,
                                             bookId: randomId
                                         }
                                     })
@@ -168,7 +168,7 @@ router.get('/suggestion', (req, res) => {
                                                     .then(product => {
                                                         res.render('books/suggestion', {
                                                             book: product.data.results[0],
-                                                            currentUser: res.locals.currentUser
+                                                            currentUser:user
                                                         })
                                                     })
                                                     .catch(flaw => res.send(flaw))
