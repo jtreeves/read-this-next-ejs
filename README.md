@@ -48,3 +48,75 @@ You can view a live version of this app on Heroku:
 ![Unrated Books](/images/unrated-books.png)
 ![Book Suggestion](/images/book-suggestion.png)
 ![Reading List](/images/reading-list.png)
+
+## Code Snippet
+
+This code block involves five nested promises, including two database queries and three API calls, to provide the user with a random book recommendation based on the information they have previously provided to the app.
+
+**Suggestion Route**
+```javascript
+router.get('/suggestion', isLoggedIn, (req, res) => {
+    const user = res.locals.currentUser
+    db.rating
+        .findAll({
+            where: {
+                userId: user.id,
+                value: 5
+            }
+        })
+        .then(responses => {
+            const randomStarredId = randomElement(responses).bookId
+            axios
+                .get(url + `&ids=${randomStarredId}`)
+                .then(output => {
+                    const starredBook = output.data.results[0]
+                    const starredSubjects = starredBook.subjects
+                    const randomStarredSubject = randomElement(starredSubjects).split(' ')[0]
+                    axios
+                        .get(url + `&topic=${randomStarredSubject}`)
+                        .then(elements => {
+                            const ids = []
+                            const materials = elements.data.results
+                            for (let i = 0; i < materials.length; i++) {
+                                ids[i] = materials[i].id
+                            }
+                            finalSelection()
+                            function finalSelection() {
+                                const randomId = randomElement(ids)
+                                const randomBook = materials[materials.findIndex(object => object.id === randomId)]
+                                db.pass
+                                    .findAndCountAll({
+                                        where: {
+                                            userId: user.id,
+                                            bookId: randomId
+                                        }
+                                    })
+                                    .then(check => {
+                                        if (check.count === 0) {
+                                            if (excludeDuplicates(starredBook.title, randomBook.title)) {
+                                                axios
+                                                    .get(url + `&ids=${randomId}`)
+                                                    .then(product => {
+                                                        res.render('books/suggestion', {
+                                                            book: product.data.results[0],
+                                                            currentUser:user
+                                                        })
+                                                    })
+                                                    .catch(() => res.status(400).render('404'))
+                                            } else {
+                                                finalSelection()
+                                            }
+                                        } else {
+                                            finalSelection()
+                                        }
+                                    })
+                                    .catch(() => res.status(400).render('404'))
+                            }
+                        })
+                        .catch(() => res.status(400).render('404'))
+                })
+                .catch(() => res.status(400).render('404'))
+        })
+        .catch(() => res.status(400).render('404'))
+})
+```
