@@ -1,7 +1,7 @@
 <h2>Rate These Books</h2>
 <p>Here are some randomly selected books for you to rate. Rate as many books as you can, so we can give you the most personal suggestions possible!</p>
 <% books.forEach(book => { %>
-    <p class="well">
+    <div class="well">
         <em><%= book.title %></em>
         <form action="/books/rated" method="POST">
             <label for="value">Rating (1-5):</label>
@@ -17,5 +17,5 @@
             <input name="userId" value="<%= currentUser.id %>" type="hidden">
             <input type="submit" value="Submit Read Status">
         </form>
-    </p>
+    </div>
 <% }) %>

@@ -1,10 +1,10 @@
 <h2>Reading List</h2>
 <p>A list of all the books that you have added to your reading list will appear on this page.</p>
 <% books.forEach(book => { %>
-    <p class="well">
+    <div class="well">
         <em><%= book.title %></em>
         <form action="/books/text" method="GET">
-            <input name="id" value="<%= book.id %>" type="hidden">
+            <indivut name="id" value="<%= book.id %>" type="hidden">
             <input type="submit" value="Read Book">
         </form>
         <form action="/books/<%= book.id %>?_method=DELETE" method="POST">
@@ -12,5 +12,5 @@
             <input name="userId" value="<%= currentUser.id %>" type="hidden">
             <input type="submit" value="Remove from Reading List">
         </form>
-    </p>
+    </div>
 <% }) %> 
