@@ -13,7 +13,7 @@ function randomElement(array) {
     return array[math.floor(math.random() * array.length)]
 }
 
-function findDuplicates(mainTitle, testTitle) {
+function excludeDuplicates(mainTitle, testTitle) {
     const mainStripped = mainTitle.replace(/[^a-zA-Z0-9 ]/g, '')
     const testStripped = testTitle.replace(/[^a-zA-Z0-9 ]/g, '')
     console.log(`TESTSTRIPPED: ${testStripped}`)
@@ -27,8 +27,59 @@ function findDuplicates(mainTitle, testTitle) {
     }
     console.log(`MAINSHORT: ${mainShort}`)
     console.log(`INCLUDES: ${testStripped.includes(mainShort)}`)
-    return testStripped.includes(mainShort)
+    return !testStripped.includes(mainShort)
 }
+
+// function excludeUnoriginals(book, user) {
+router.get('/test', (req, res) => {
+    let countFavorites = ''
+    let countPasses = ''
+    let countRatings = ''
+    let countStatuses = ''
+    const criteria = {
+        where: {
+            userId: res.locals.currentUser.id
+            // bookId: book
+        }
+    }
+    const checkFavorites = db.favorite
+        .findAndCountAll(criteria)
+        .then(responseFavorites => {
+            countFavorites = responseFavorites.count
+        })
+    const checkPasses = db.pass
+        .findAndCountAll(criteria)
+        .then(responsePasses => {
+            countPasses = responsePasses.count
+        })
+    const checkRatings = db.rating
+        .findAndCountAll(criteria)
+        .then(responseRatings => {
+            countRatings = responseRatings.count
+        })
+    const checkStatuses = db.status
+        .findAndCountAll(criteria)
+        .then(responseStatuses => {
+            countStatuses = responseStatuses.count
+        })
+    Promise
+        .all([checkFavorites, checkPasses, checkRatings, checkStatuses])
+        .then(response => {
+            res.send(`FAVE COUNT: ${countFavorites}; PASS COUNT: ${countPasses}; RATING COUNT: ${countRatings}; STATUS COUNT: ${countStatuses}`)
+        })
+})
+
+// router.get('/test', (req, res) => {
+//     let count1 = ''
+//     let count2 = ''
+//     const testing1 = db.rating.findAndCountAll({
+//         where: { userId: res.locals.currentUser.id }
+//     }).then(res1 => { count1 = res1.count })
+//     const testing2 = db.status.findAndCountAll({
+//         where: { userId: res.locals.currentUser.id }
+//     }).then(res2 => { count2 = res2.count })
+//     Promise.all([testing1, testing2]).then(response => res.send(`COUNT1: ${count1}; COUNT2: ${count2}`))
+// })
 
 router.get('/', (req, res) => {
     axios
@@ -98,7 +149,7 @@ router.get('/suggestion', (req, res) => {
                                 console.log(`RANDOMID: ${randomId}`)
                                 const randomBook = materials[materials.findIndex(object => object.id === randomId)]
                                 console.log(`RANDOMBOOK.TITLE: ${randomBook.title}`)
-                                if (!findDuplicates(starredBook.title, randomBook.title)) {
+                                if (excludeDuplicates(starredBook.title, randomBook.title)) {
                                     axios
                                         .get(url + `&ids=${randomId}`)
                                         .then(product => {
