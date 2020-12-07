@@ -119,7 +119,7 @@ router.get('/suggestion', (req, res) => {
         .catch(error => res.send(error))
 })
 
-router.get('/:id', (req, res) => {
+router.get('/text', (req, res) => {
     const id = req.query.id
     console.log(`FULL TEXT ID: ${id}`)
     axios
