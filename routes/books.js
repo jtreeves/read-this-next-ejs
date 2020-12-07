@@ -32,17 +32,13 @@ router.get('/suggestion', (req, res) => {
             },
             limit: 1
         })
-        .then(responses => {
-            console.log(`RESPONSES[0].BOOKID: ${responses[0].bookId}`)
-            const ids = []
-            for (let i = 0; i < responses.length; i++) {
-                ids[i] = responses[i].bookId
-            }
+        .then(response => {
+            const id = response[0].bookId
             axios
-                .get(url + `&ids=${ids.toString()}`)
-                .then(outputs => {
+                .get(url + `&ids=${id}`)
+                .then(output => {
                     res.render('books/suggestion', {
-                        book: outputs.data.results[0]
+                        book: output.data.results[0]
                     })
                 })
                 .catch(problem => res.send(problem))
