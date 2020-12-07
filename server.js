@@ -1,20 +1,19 @@
+// Imports
 require('dotenv').config()
 const express = require('express')
 const layouts = require('express-ejs-layouts')
 const session = require('express-session')
 const passport = require('./config/ppConfig')
 const flash = require('connect-flash')
-const SECRET_SESSION = process.env.SECRET_SESSION
-const app = express()
-
 const methodOverride = require('method-override')
-app.use(methodOverride('_method'))
-
-// isLoggedIn middleware
 const isLoggedIn = require('./middleware/isLoggedIn')
+
+const app = express()
+const SECRET_SESSION = process.env.SECRET_SESSION
 
 app.set('view engine', 'ejs')
 
+app.use(methodOverride('_method'))
 app.use(require('morgan')('dev'))
 app.use(express.urlencoded({ extended: false }))
 app.use(express.static(__dirname + '/public'))

@@ -1,17 +1,21 @@
+// Imports
 const express = require('express')
 const axios = require('axios').default
 const db = require('../models')
 const sequelize = require('sequelize')
 const math = require('mathjs')
 
+// Constants
 const router = express.Router()
 const op = sequelize.Op
 const url = 'http://gutendex.com/books?languages=en&copyright=false'
 
+// Chooses a random element from an array
 function randomElement(array) {
     return array[math.floor(math.random() * array.length)]
 }
 
+// Generates a random array of integers
 function randomIds() {
     const ids = []
     for (let i = 0; i < 10; i++) {
@@ -20,6 +24,7 @@ function randomIds() {
     return ids
 }
 
+// Checks for similar titles
 function excludeDuplicates(mainTitle, testTitle) {
     const mainStripped = mainTitle.replace(/[^a-zA-Z0-9 ]/g, '')
     const testStripped = testTitle.replace(/[^a-zA-Z0-9 ]/g, '')
@@ -34,6 +39,7 @@ function excludeDuplicates(mainTitle, testTitle) {
     return !testStripped.includes(mainShort)
 }
 
+// GET route for index
 router.get('/', (req, res) => {
     const list = randomIds()
     axios
@@ -47,6 +53,7 @@ router.get('/', (req, res) => {
         .catch(() => res.status(400).render('404'))
 })
 
+// GET route for favorites
 router.get('/favorites', (req, res) => {
     db.favorite
         .findAll({
@@ -70,6 +77,7 @@ router.get('/favorites', (req, res) => {
         .catch(() => res.status(400).render('404'))
 })
 
+// GET route for suggestion
 router.get('/suggestion', (req, res) => {
     const user = res.locals.currentUser
     db.rating
@@ -135,6 +143,7 @@ router.get('/suggestion', (req, res) => {
         .catch(() => res.status(400).render('404'))
 })
 
+// GET route for text
 router.get('/text', (req, res) => {
     const id = req.query.id
     axios
@@ -155,6 +164,7 @@ router.get('/text', (req, res) => {
         .catch(() => res.status(400).render('404'))
 })
 
+// GET route for rated
 router.get('/rated', (req, res) => {
     db.rating
         .findAll({
@@ -193,6 +203,7 @@ router.get('/rated', (req, res) => {
         .catch(() => res.status(400).render('404'))
 })
 
+// GET route for read
 router.get('/read', (req, res) => {
     db.status
         .findAll({
@@ -218,6 +229,7 @@ router.get('/read', (req, res) => {
         .catch(() => res.status(400).render('404'))
 })
 
+// POST route for rated
 router.post('/rated', (req, res) => {
     db.rating
         .create({
@@ -229,6 +241,7 @@ router.post('/rated', (req, res) => {
         .catch(() => res.status(400).render('404'))
 })
 
+// POST route for read
 router.post('/read', (req, res) => {
     db.status
         .create({
@@ -240,6 +253,7 @@ router.post('/read', (req, res) => {
         .catch(() => res.status(400).render('404'))
 })
 
+// POST route for favorites
 router.post('/favorites', (req, res) => {
     db.favorite
         .create({
@@ -250,6 +264,7 @@ router.post('/favorites', (req, res) => {
         .catch(() => res.status(400).render('404'))
 })
 
+// POST route for pass
 router.post('/pass', (req, res) => {
     db.pass
         .create({
@@ -260,6 +275,7 @@ router.post('/pass', (req, res) => {
         .catch(() => res.status(400).render('404'))
 })
 
+// PUT route for ratings
 router.put('/:id', (req, res) => {
     db.rating
         .update(
@@ -277,6 +293,7 @@ router.put('/:id', (req, res) => {
         .catch(() => res.status(400).render('404'))
 })
 
+// DELETE route for favorites
 router.delete('/:id', (req, res) => {
     db.favorite
         .destroy({
@@ -289,4 +306,5 @@ router.delete('/:id', (req, res) => {
         .catch(() => res.status(400).render('404'))
 })
 
+// Exports
 module.exports = router
