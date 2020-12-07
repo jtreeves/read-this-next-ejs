@@ -187,4 +187,24 @@ router.post('/read', (req, res) => {
         .catch(error => res.send(error))
 })
 
+router.post('/favorites', (req, res) => {
+    db.favorite
+        .create({
+            userId: req.body.userId,
+            bookId: req.body.bookId
+        })
+        .then(() => res.redirect('/books'))
+        .catch(error => res.send(error))
+})
+
+router.post('/pass', (req, res) => {
+    db.pass
+        .create({
+            userId: req.body.userId,
+            bookId: req.body.bookId
+        })
+        .then(() => res.redirect('/books'))
+        .catch(error => res.send(error))
+})
+
 module.exports = router
