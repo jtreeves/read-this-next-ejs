@@ -50,10 +50,10 @@ router.get('/suggestion', (req, res) => {
 
 router.get('/text', (req, res) => {
     db.rating
-        .findOne({
+        .findAll({
             where: {
                 userId: res.locals.currentUser.id,
-                order: sequelize.literal('max(value) DESC')
+                value: { [op.eq]: 5 },
             }
         })
         .then(responses => {
@@ -65,7 +65,7 @@ router.get('/text', (req, res) => {
                 .get(url + `&ids=${ids.toString()}`)
                 .then(outputs => {
                     res.render('books/text', {
-                        book: outputs.data.results
+                        books: outputs.data.results
                     })
                 })
                 .catch(problem => res.send(problem))
