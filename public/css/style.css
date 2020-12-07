@@ -1,13 +1,18 @@
 body {
     font-family: Georgia, 'Times New Roman', Times, serif;
+    text-align: center;
 }
 
 nav ul li {
     text-decoration: none;
     display: inline-block;
-    margin-right: .3em;
+    margin: 10px;
 }
 
 h1 {
     color: blue;
+}
+
+h2 {
+    color: darkblue;
 }
