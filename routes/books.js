@@ -4,6 +4,7 @@ const axios = require('axios').default
 const db = require('../models')
 const sequelize = require('sequelize')
 const math = require('mathjs')
+const isLoggedIn = require('../middleware/isLoggedIn')
 
 // Constants
 const router = express.Router()
@@ -40,7 +41,7 @@ function excludeDuplicates(mainTitle, testTitle) {
 }
 
 // GET route for index
-router.get('/', (req, res) => {
+router.get('/', isLoggedIn, (req, res) => {
     const list = randomIds()
     axios
         .get(url + `&ids=${list.toString()}`)
@@ -54,7 +55,7 @@ router.get('/', (req, res) => {
 })
 
 // GET route for favorites
-router.get('/favorites', (req, res) => {
+router.get('/favorites', isLoggedIn, (req, res) => {
     db.favorite
         .findAll({
             where: { userId: res.locals.currentUser.id }
@@ -78,7 +79,7 @@ router.get('/favorites', (req, res) => {
 })
 
 // GET route for suggestion
-router.get('/suggestion', (req, res) => {
+router.get('/suggestion', isLoggedIn, (req, res) => {
     const user = res.locals.currentUser
     db.rating
         .findAll({
@@ -144,7 +145,7 @@ router.get('/suggestion', (req, res) => {
 })
 
 // GET route for text
-router.get('/text', (req, res) => {
+router.get('/text', isLoggedIn, (req, res) => {
     const id = req.query.id
     axios
         .get(url + `&ids=${id}`)
@@ -165,7 +166,7 @@ router.get('/text', (req, res) => {
 })
 
 // GET route for rated
-router.get('/rated', (req, res) => {
+router.get('/rated', isLoggedIn, (req, res) => {
     db.rating
         .findAll({
             where: { userId: res.locals.currentUser.id }
@@ -204,7 +205,7 @@ router.get('/rated', (req, res) => {
 })
 
 // GET route for read
-router.get('/read', (req, res) => {
+router.get('/read', isLoggedIn, (req, res) => {
     db.status
         .findAll({
             where: {
