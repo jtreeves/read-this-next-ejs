@@ -30,16 +30,15 @@ function excludeDuplicates(mainTitle, testTitle) {
     return !testStripped.includes(mainShort)
 }
 
-// function excludeUnoriginals(book, user) {
-router.get('/test', (req, res) => {
+function excludeUnoriginals(book, user) {
     let countFavorites = ''
     let countPasses = ''
     let countRatings = ''
     let countStatuses = ''
     const criteria = {
         where: {
-            userId: res.locals.currentUser.id
-            // bookId: book
+            userId: user,
+            bookId: book
         }
     }
     const checkFavorites = db.favorite
@@ -65,9 +64,13 @@ router.get('/test', (req, res) => {
     Promise
         .all([checkFavorites, checkPasses, checkRatings, checkStatuses])
         .then(response => {
-            res.send(`FAVE COUNT: ${countFavorites}; PASS COUNT: ${countPasses}; RATING COUNT: ${countRatings}; STATUS COUNT: ${countStatuses}`)
+            if (countFavorites === 0 && countPasses === 0 && countRatings === 0 && countStatuses === 0) {
+                return true
+            } else {
+                return false
+            }
         })
-})
+}
 
 // router.get('/test', (req, res) => {
 //     let count1 = ''
@@ -117,10 +120,11 @@ router.get('/favorites', (req, res) => {
 })
 
 router.get('/suggestion', (req, res) => {
+    const user = res.locals.currentUser.id
     db.rating
         .findAll({
             where: {
-                userId: res.locals.currentUser.id,
+                userId: user,
                 value: 5
             }
         })
@@ -149,16 +153,20 @@ router.get('/suggestion', (req, res) => {
                                 console.log(`RANDOMID: ${randomId}`)
                                 const randomBook = materials[materials.findIndex(object => object.id === randomId)]
                                 console.log(`RANDOMBOOK.TITLE: ${randomBook.title}`)
-                                if (excludeDuplicates(starredBook.title, randomBook.title)) {
-                                    axios
-                                        .get(url + `&ids=${randomId}`)
-                                        .then(product => {
-                                            res.render('books/suggestion', {
-                                                book: product.data.results[0],
-                                                currentUser: res.locals.currentUser
+                                if (excludeUnoriginals(randomId, user)) {
+                                    if (excludeDuplicates(starredBook.title, randomBook.title)) {
+                                        axios
+                                            .get(url + `&ids=${randomId}`)
+                                            .then(product => {
+                                                res.render('books/suggestion', {
+                                                    book: product.data.results[0],
+                                                    currentUser: res.locals.currentUser
+                                                })
                                             })
-                                        })
-                                        .catch(flaw => res.send(flaw))
+                                            .catch(flaw => res.send(flaw))
+                                    } else {
+                                        finalSelection()
+                                    }
                                 } else {
                                     finalSelection()
                                 }
