@@ -58,6 +58,8 @@ app.get('/profile', isLoggedIn, (req, res) => {
             where: { id: res.locals.currentUser.id }
         })
         .then(response => {
+            console.log(`USER RESPONSE: ${response}`)
+            console.log(`USER RESPONSE NAME: ${response.name}`)
             res.render('profile', { user: response })
         })
         .catch(() => res.status(400).render('404'))
