@@ -33,13 +33,17 @@ router.get('/suggestion', (req, res) => {
             limit: 1
         })
         .then(response => {
-            const id = response[0].bookId
             axios
-                .get(url + `&ids=${id}`)
+                .get(url + `&ids=${response[0].bookId}`)
                 .then(output => {
-                    res.render('books/suggestion', {
-                        book: output.data.results[0]
-                    })
+                    axios
+                        .get(url + `&topic=${output.data.results[0].subjects[0].split(' ')[0]}`)
+                        .then(elements => {
+                            res.render('books/suggestion', {
+                                books: elements.data.results
+                            })
+                        })
+                        .catch(rejection => res.send(rejection))
                 })
                 .catch(problem => res.send(problem))
         })
