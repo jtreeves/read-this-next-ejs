@@ -13,6 +13,32 @@ function randomElement(array) {
     return array[math.floor(math.random() * array.length)]
 }
 
+function randomIds() {
+    const ids = []
+    for (let i = 0; i < 5; i++) {
+        ids[i] = math.floor(math.random() * 50000)
+    }
+    console.log(`INITIAL IDS: ${ids}`)
+    // const check = []
+    // for (let i = 0; i < 10; i++) {
+    //     if (check.indexOf(ids[i]) !== -1) {
+    //         randomIds()
+    //     } else {
+    //         check[i] = array[i]
+    //     }
+    // }
+    // console.log(`CHECKED IDS: ${ids}`)
+    return ids
+}
+
+function checkOverlaps(array1, array2) {
+    if (array1.some(element => array2.includes(element))) {
+        array1 = randomIds()
+    } else {
+        return array1
+    }
+}
+
 function excludeDuplicates(mainTitle, testTitle) {
     const mainStripped = mainTitle.replace(/[^a-zA-Z0-9 ]/g, '')
     const testStripped = testTitle.replace(/[^a-zA-Z0-9 ]/g, '')
@@ -85,13 +111,30 @@ function excludeDuplicates(mainTitle, testTitle) {
 // })
 
 router.get('/', (req, res) => {
-    axios
-        .get(url)
+    db.rating
+        .findAll({
+            where: { userId: res.locals.currentUser.id }
+        })
         .then(responses => {
-            res.render('books/index', {
-                books: responses.data.results,
-                currentUser: res.locals.currentUser
-            })
+            const list = randomIds()
+            console.log(`LIST: ${list}`)
+            const ids = []
+            for (let i = 0; i < responses.length; i++) {
+                ids[i] = responses[i].bookId
+            }
+            console.log(`IDS: ${ids}`)
+            // checkOverlaps(list, ids)
+            // console.log(`NEW LIST: ${list}`)
+            axios
+                .get(url + `&ids=${list.toString()}`)
+                .then(outputs => {
+                    console.log(`OUTPUTS: ${outputs}`)
+                    res.render('books/index', {
+                        books: outputs.data.results,
+                        currentUser: res.locals.currentUser
+                    })
+                })
+                .catch(problem => res.send(problem))
         })
         .catch(error => res.send(error))
 })
