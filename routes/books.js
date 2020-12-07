@@ -56,7 +56,8 @@ router.get('/favorites', (req, res) => {
                 .get(url + `&ids=${ids.toString()}`)
                 .then(outputs => {
                     res.render('books/favorites', {
-                        books: outputs.data.results
+                        books: outputs.data.results,
+                        currentUser: res.locals.currentUser
                     })
                 })
                 .catch(problem => res.send(problem))
@@ -248,7 +249,7 @@ router.post('/pass', (req, res) => {
 })
 
 router.put('/:id', (req, res) => {
-    const id = req.params.id
+    // const id = req.params.id
     db.rating
         .update(
             {
@@ -261,6 +262,18 @@ router.put('/:id', (req, res) => {
                 }
             }
         )
+        .then(() => res.redirect('/books'))
+        .catch(error => res.send(error))
+})
+
+router.delete('/:id', (req, res) => {
+    db.favorite
+        .destroy({
+            where: {
+                userId: req.body.userId,
+                bookId: req.body.bookId
+            }
+        })
         .then(() => res.redirect('/books'))
         .catch(error => res.send(error))
 })

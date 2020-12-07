@@ -9,6 +9,11 @@
                     <input name="id" value="<%= book.id %>" type="hidden">
                     <input type="submit" value="Read Book">
                 </form>
+                <form action="/books/<%= book.id %>?_method=DELETE" method="POST">
+                    <input name="bookId" value="<%= book.id %>" type="hidden">
+                    <input name="userId" value="<%= currentUser.id %>" type="hidden">
+                    <input type="submit" value="Remove from Reading List">
+                </form>
             </p>
         </li>
     <% }) %> 
