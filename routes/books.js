@@ -30,47 +30,47 @@ function excludeDuplicates(mainTitle, testTitle) {
     return !testStripped.includes(mainShort)
 }
 
-function excludeUnoriginals(book, user) {
-    let countFavorites = ''
-    let countPasses = ''
-    let countRatings = ''
-    let countStatuses = ''
-    const criteria = {
-        where: {
-            userId: user,
-            bookId: book
-        }
-    }
-    const checkFavorites = db.favorite
-        .findAndCountAll(criteria)
-        .then(responseFavorites => {
-            countFavorites = responseFavorites.count
-        })
-    const checkPasses = db.pass
-        .findAndCountAll(criteria)
-        .then(responsePasses => {
-            countPasses = responsePasses.count
-        })
-    const checkRatings = db.rating
-        .findAndCountAll(criteria)
-        .then(responseRatings => {
-            countRatings = responseRatings.count
-        })
-    const checkStatuses = db.status
-        .findAndCountAll(criteria)
-        .then(responseStatuses => {
-            countStatuses = responseStatuses.count
-        })
-    Promise
-        .all([checkFavorites, checkPasses, checkRatings, checkStatuses])
-        .then(response => {
-            if (countFavorites === 0 && countPasses === 0 && countRatings === 0 && countStatuses === 0) {
-                return true
-            } else {
-                return false
-            }
-        })
-}
+// function excludeUnoriginals(book, user) {
+//     let countFavorites = ''
+//     let countPasses = ''
+//     let countRatings = ''
+//     let countStatuses = ''
+//     const criteria = {
+//         where: {
+//             userId: user,
+//             bookId: book
+//         }
+//     }
+//     const checkFavorites = db.favorite
+//         .findAndCountAll(criteria)
+//         .then(responseFavorites => {
+//             countFavorites = responseFavorites.count
+//         })
+//     const checkPasses = db.pass
+//         .findAndCountAll(criteria)
+//         .then(responsePasses => {
+//             countPasses = responsePasses.count
+//         })
+//     const checkRatings = db.rating
+//         .findAndCountAll(criteria)
+//         .then(responseRatings => {
+//             countRatings = responseRatings.count
+//         })
+//     const checkStatuses = db.status
+//         .findAndCountAll(criteria)
+//         .then(responseStatuses => {
+//             countStatuses = responseStatuses.count
+//         })
+//     Promise
+//         .all([checkFavorites, checkPasses, checkRatings, checkStatuses])
+//         .then(response => {
+//             if (countFavorites === 0 && countPasses === 0 && countRatings === 0 && countStatuses === 0) {
+//                 return true
+//             } else {
+//                 return false
+//             }
+//         })
+// }
 
 // router.get('/test', (req, res) => {
 //     let count1 = ''
@@ -153,23 +153,33 @@ router.get('/suggestion', (req, res) => {
                                 console.log(`RANDOMID: ${randomId}`)
                                 const randomBook = materials[materials.findIndex(object => object.id === randomId)]
                                 console.log(`RANDOMBOOK.TITLE: ${randomBook.title}`)
-                                if (excludeUnoriginals(randomId, user)) {
-                                    if (excludeDuplicates(starredBook.title, randomBook.title)) {
-                                        axios
-                                            .get(url + `&ids=${randomId}`)
-                                            .then(product => {
-                                                res.render('books/suggestion', {
-                                                    book: product.data.results[0],
-                                                    currentUser: res.locals.currentUser
-                                                })
-                                            })
-                                            .catch(flaw => res.send(flaw))
-                                    } else {
-                                        finalSelection()
-                                    }
-                                } else {
-                                    finalSelection()
-                                }
+                                db.pass
+                                    .findAndCountAll({
+                                        where: {
+                                            userId: user,
+                                            bookId: randomId
+                                        }
+                                    })
+                                    .then(check => {
+                                        if (check.count === 0) {
+                                            if (excludeDuplicates(starredBook.title, randomBook.title)) {
+                                                axios
+                                                    .get(url + `&ids=${randomId}`)
+                                                    .then(product => {
+                                                        res.render('books/suggestion', {
+                                                            book: product.data.results[0],
+                                                            currentUser: res.locals.currentUser
+                                                        })
+                                                    })
+                                                    .catch(flaw => res.send(flaw))
+                                            } else {
+                                                finalSelection()
+                                            }
+                                        } else {
+                                            finalSelection()
+                                        }
+                                    })
+                                    .catch(discard => res.send(discard))
                             }
                         })
                         .catch(rejection => res.send(rejection))
