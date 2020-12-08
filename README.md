@@ -25,6 +25,15 @@ You can view a live version of this app on Heroku:
 1. Run `nodemon` when in your local directory
 2. Access the site on your browser at `localhost:3000`
 
+## Routes
+
+| Method | URL Path   | File Location        | Purpose                       |
+| ------ | ---------- | -------------------- | ----------------------------- |
+| GET    | /          | /books/index.ejs     | Show random books to rate     |
+| POST   | /favorites | /books/favorites.ejs | Display reading list          |
+| PUT    | /:id       | /books/rated.ejs     | Change star rating of book    |
+| DELETE | /:id       | /books/favorites.ejs | Remove book from reading list |
+
 ## ERD
 
 ![Database](/images/reading.png)
